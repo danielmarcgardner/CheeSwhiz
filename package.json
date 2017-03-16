@@ -1,0 +1,35 @@
+{
+  "name": "CheeSwhiz",
+  "version": "0.0.1",
+  "private": true,
+  "description": "CheeSwhiz is an api that allows users to fulfill their wildest cheese dreams",
+  "keywords": [],
+  "author": "Daniel Gardner and Reid Delahunt",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt-as-promised": "^1.1.0",
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.12.3",
+    "express-validation": "^1.0.2",
+    "joi": "^10.2.2",
+    "jsonwebtoken": "^7.3.0",
+    "knex": "^0.12.8",
+    "pg": "^6.1.4",
+    "request": "^2.81.0",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "dotenv": "^4.0.0",
+    "mocha": "^3.2.0",
+    "morgan": "^1.8.1",
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}
