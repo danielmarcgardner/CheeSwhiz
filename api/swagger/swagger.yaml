@@ -22,6 +22,7 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
+      summary: Get all the cheeses that CheeSwhiz has to offer
       description: Returns all cheeses in the database
       # used as the method name of the controller
       operationId: allCheese
@@ -31,14 +32,15 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Add a cheese to our database!
+      summary: Add a cheese to our database!
+      description: Have a cheese that we don't? Share your expertise with us!
       # used as the method name of the controller
       operationId: postCheese
       parameters:
@@ -53,15 +55,20 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrorResponse"          
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cheese/{id}:  
     patch:
-      description: Update one of our cheeses!
+      summary: Update one of our cheeses!
+      description: Does one of our cheeses have the wrong information? If so submit an update.
       # used as the method name of the controller
       operationId: updateCheese
       parameters:
@@ -76,21 +83,27 @@ paths:
           description: The cheese to update.
           required: false
           schema:
-            $ref: "#/definitions/CreateCheese"
+            $ref: "#/definitions/UpdateCheese"
             
       responses:
         "200":
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/UpdatedCheese"
         # responses may fall through to errors
+        "404":
+          description: Not Found
+          schema: 
+            $ref: "#/definitions/ErrorResponse"
+            
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
     delete:
-      description: Delete one of our cheeses!
+      summary: Delete one of our cheeses!
+      description: A super user/admin may delete a cheese from our database
       # used as the method name of the controller
       operationId: deleteCheese
       parameters:
@@ -99,6 +112,13 @@ paths:
           description: cheese id to delete
           required: true
           type: integer
+          
+        - name: Super User Token
+          in: body
+          description: The super user's authentication token to authorize the deletion of a cheese
+          required: true
+          schema:
+            $ref: "#/definitions/SuperUserToken"
             
       responses:
         "200":
@@ -106,6 +126,10 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/DeleteCheese"
+        "404":
+          description: Not Found
+          schema: 
+            $ref: "#/definitions/ErrorResponse"
         # responses may fall through to errors
         default:
           description: Error
@@ -115,7 +139,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find cheese stores in your area
+      summary: Find cheese stores in your area
+      description: This route makes a yelp api call for cheese stores in your area so you can go out and find the cheese that you want.
       # used as the method name of the controller
       operationId: giveMeThatCheese
       parameters:
@@ -138,6 +163,10 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/FindDatCheese"
         # responses may fall through to errors
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
@@ -146,7 +175,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find cheeses by firmness
+      summary: Find cheeses by firmness
+      description: Search through our cheese database and find cheeses by their firmness
       # used as the method name of the controller
       operationId: findCheeseByFirmness
       parameters:
@@ -161,8 +191,9 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        
         default:
           description: Error
           schema:
@@ -172,7 +203,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find cheeses by animal milk
+      summary: Find cheeses by animal milk
+      description: Search through our cheese database and find cheeses by their the animal milk
       # used as the method name of the controller
       operationId: findCheeseByAnimal
       parameters:
@@ -187,8 +219,13 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "404":
+          description: Not Found
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
@@ -198,7 +235,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find a specific type of cheese
+      summary: Find a specific cheese by name.
+      description:  Search through our cheese database and find a specific cheese by it's name.
       # used as the method name of the controller
       operationId: findCheeseByName
       parameters:
@@ -213,8 +251,14 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "404":
+          description: Not Found
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+            
         default:
           description: Error
           schema:
@@ -224,7 +268,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find cheese a similar cheese to a type of cheese you are searching for
+      summary: Find a substitute cheese.
+      description: Find cheese that is similar to the name of cheese you are searching for.
       # used as the method name of the controller
       operationId: substituteCheese
       parameters:
@@ -239,8 +284,13 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "404":
+          description: Not Found
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
@@ -250,7 +300,8 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Find a random number of cheeses by some parameter
+      summary: Find a random amount of cheeses.
+      description: Find a random number of cheeses by some parameter from our database.
       # used as the method name of the controller
       operationId: randomCheeseGenerator
       parameters:
@@ -271,18 +322,29 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "400":
+          description: Bad Request
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Not Found
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/user/register:
+  /user/register:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     post:
-      description: Register a new user
+      summary: Register a new user.
+      description: This is where new user's can create an account with CheeSwhiz.
       # used as the method name of the controller
       operationId: registerNewUser
       parameters:
@@ -298,18 +360,29 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/Token"
+            $ref: "#/definitions/userRegLogin"
         # responses may fall through to errors
+        "400":
+          description: Email Already Exists
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/user/login:
+  /user/login:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: Log a user into cheeSwhiz
+      summary: Log a user into CheeSwhiz
+      description: Log a user into CheeSwhiz so that that can access their favorites 
       # used as the method name of the controller
       operationId: logInUser
       parameters:
@@ -327,16 +400,22 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/Token"
         # responses may fall through to errors
+        "400":
+          description: Email and Password didn't match
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
             
-  /cheese/user/favorites:
+  /user/favorites:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      description: view a users favorites
+      summary: View a users favorites
+      description: A logged in user can view their favorite cheeses
       # used as the method name of the controller
       operationId: getFavorites
       parameters:
@@ -354,17 +433,23 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/TokenUserGetFavorite"
         # responses may fall through to errors
+        "403":
+          description: Forbidden
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"        
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"            
 
     post:
-      description: Add a users favorites
+      summary: Add a users favorites
+      description: A user can add a new favorite cheese cheese to their favorites collection.
       # used as the method name of the controller
       operationId: addFavorites
       parameters:
-        - name: tokenAndFav
+        - name: Token and Favorite Cheese
           in: body
           description: The user's authentication token
           required: true
@@ -376,19 +461,52 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "403":
+          description: Forbidden
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse" 
-
+    patch:
+      summary: Update notes on a favorite cheese
+      description: A user can add or update a note on their favorite cheese!
+      # used as the method name of the controller
+      operationId: addFavoritesNote
+      parameters:
+        - name: Token and Notes
+          in: body
+          description: The user's authentication token
+          required: true
+          schema:
+            $ref: "#/definitions/TokenUserAddNote"    
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/CheeseArray"
+        # responses may fall through to errors
+        "403":
+          description: Forbidden
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
     delete:
       description: Delete a users favorite cheese
       # used as the method name of the controller
       operationId: deleteFavorites
       parameters:
-        - name: tokenAndDel
+        - name: Token and Delete info
           in: body
           description: The user's authentication token
           required: true
@@ -400,8 +518,13 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/StandardCheese"
+            $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
+        "403":
+          description: Forbidden
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
@@ -411,7 +534,18 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  StandardCheese:
+  CheeseArray:
+    description: An array of cheeses based on the user's selection
+    required:
+      - cheeses
+    properties:
+      cheeses:
+        type: array
+        description: An array of cheeses
+        items:
+          $ref: "#/definitions/Cheese"
+  Cheese:
+    description: A single cheese in the database
     required:
       - name
       - firmness
@@ -421,16 +555,22 @@ definitions:
     properties:
       name:
         type: string
+        description: The name of the cheese
       firmness:
         type: string
+        description: The firmness of the cheese
       animal:
         type: string
+        description: The animal milk it is made of
       id:
         type: integer
+        description: Primary key of the cheese
       user_id:
         type: integer
+        description: The user's id who added the cheese to the database
   
   CreateCheese:
+    description: Adding new cheese to the databse
     required:
       - name
       - firmness
@@ -438,12 +578,45 @@ definitions:
     properties:
       name:
         type: string
-      animal:
-        type: string
+        description: The name of the cheese
       firmness:
         type: string
+        description: The firmness of the cheese
+      animal:
+        type: string
+        description: The animal milk it is made of
+          
+  UpdateCheese:
+    description: Updating a cheese in the database
+    properties:
+      name:
+        type: string
+        description: The name of the cheese
+      firmness:
+        type: string
+        description: The firmness of the cheese
+      animal:
+        type: string
+        description: The animal milk it is made of
+  
+  UpdatedCheese:
+    description: The cheese information that has been updated
+    properties:
+      name:
+        type: string
+        description: The name of the cheese
+      firmness:
+        type: string
+        description: The firmness of the cheese
+      animal:
+        type: string
+        description: The animal milk it is made of
+      id:
+        type: integer
+        description: The id of the cheese to update
         
   DeleteCheese:
+    description: The cheese that is being deleted
     required:
       - name
       - firmness
@@ -453,16 +626,22 @@ definitions:
     properties:
       name:
         type: string
+        description: The name of the cheese
       firmness:
         type: string
+        description: The firmness of the cheese
       animal:
         type: string
+        description: The animal milk it is made of
       id:
         type: integer
+        description: The id of the cheese to update
       user_id:
-        type: integer 
+        type: integer
+        description: The id of the user who created the cheese
   
   FindDatCheese:
+    description: An array of cheese stores based off of a yelp search
     required:
       - name
       - rating
@@ -471,31 +650,118 @@ definitions:
     properties:
       name:
         type: string
+        description: The name of the store that sells cheese
       rating:
         type: integer
+        description: The yelp rating of the cheese store
       phone:
         type: integer
+        description: The phone number of the cheese store
       location:
         type: object
+        description: All location information of the cheese store
+        properties:
+          cross_streets:
+            type: string
+            description: The cross streets of the cheese store
+          city:
+            type: string
+          display_address:
+            type: array
+            description: An array containing all address information
+            items:
+              required:
+              - address
+              - neighborhood
+              - cityAndZip
+              properties:
+                address:
+                  type: string
+                  description: The stores physical address
+                neighborhood:
+                  type: string
+                  description: The neighborhood where the store is listed
+                cityAndZip:
+                  type: string
+                  description: The city, state, and zipcode of the cheese store
+          geo_accuracy:
+            type: integer
+            description: The geo data that yelp provides
+          neighborhoods:
+            type: array
+            description: An array of the neighborhood in which the store is located
+            items:
+              required:
+              - neighborhood
+              properties:
+                neighborhood:
+                  type: string
+                  description: An array of the neighborhood in which the store is located
+          postal_code:
+            type: integer
+            description: The postal code of the cheese store
+          country_code:
+            type: string
+            description: the Country Code of the cheese store
+          address:
+            type: array
+            description: An array of the cheese store's address
+            items:
+              required:
+                - address
+              properties:
+                address:
+                  type: string
+                  description: An array with the stores physical address
+          coordinates:
+            type: object
+            description: The Latitude and Longitude of the cheese store
+            properties:
+              latitude:
+                type: number
+                description: Latitude
+              longitude:
+                type: number
+                description: Longitude
+          state_code:
+            type: string
+            description: The state where the store is locted
+              
+          
   
   userRegLogin:
+    description: Used for either creating a user or logging a user into CheeSwhiz
     required:
       - email
       - password
     properties:
       email:
         type: string
+        description: The user's email address in the database
       password:
         type: string
+        description: The user's password or desired password
   
   Token:
+    description: A user's authentication token for CheeSwhiz
     required: 
       - token
     properties:
       token:
         type: string
+        description: The user's access token
+
+  SuperUserToken:
+    description: A super user's (or admins) authentication token for CheeSwhiz
+    required: 
+      - token
+    properties:
+      token:
+        type: string
+        description: The super user's access token
   
   TokenUserGetFavorite:
+    description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses
     required: 
       - token
       - name
@@ -507,50 +773,91 @@ definitions:
     properties:
       token:
         type: string  
+        description: User's authentication token
       name:
         type: string
+        description: The name of the cheese
       firmness:
         type: string
+        description: The firmness of the cheese
       animal:
         type: string
+        description: The animal milk it is made of
       id:
         type: integer
+        description: Primary key of the cheese
       user_id:
-        type: integer 
+        type: integer
+        description: The user's id foreign key
       favorite_id:
         type: integer
+        description: The favorite tables primary key for reference
 
   TokenUserAddFavorite:
+    description: The information that is needed to add a favorite to the user's favorites
     required: 
       - token
       - name
       - firmness
       - animal
       - id
-      - user_id      
+      - user_id 
     properties:
       token:
         type: string  
+        description: User's authentication token
       name:
         type: string
+        description: The name of the cheese
       firmness:
         type: string
+        description: The firmness of the cheese
       animal:
         type: string
+        description: The animal milk it is made of
       id:
         type: integer
+        description: Primary key of the cheese
       user_id:
+        type: integer
+        description: The user's id foreign key
+      notes:
+        type: string
+        description: The user's notes on a cheese
+  
+  TokenUserAddNote:
+    description: Add a note to a favorite cheese
+    required:
+      - note
+      - token
+      - favorite_id
+    properties:
+      note:
+        type: string
+        description: The text of a user's note on a cheese
+      token:
+        type: string
+        description: A user's authentication token
+      favorite_id:
         type: integer 
+        description: The primary key in the favorites table
         
   TokenUserDeleteFavorite:
+    description: The information that is needed to delete a user's favorite cheese
     required: 
       - token
+      - user_id
       - favorite_id
     properties:
       token:
         type: string  
+        description: User's authentication token 
+      user_id:
+        type: integer
+        description: The user's id foreign key
       favorite_id:
         type: integer 
+        description: The primary key in the favorites table
   
   ErrorResponse:
     required:
