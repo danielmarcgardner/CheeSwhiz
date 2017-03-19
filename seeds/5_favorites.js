@@ -39,7 +39,7 @@ exports.seed = function(knex, Promise) {
           id: 7,
           user_id: 4,
           cheese_id: 54
-        })
+        }),
         knex('favorites').insert({
           id: 8,
           user_id: 4,

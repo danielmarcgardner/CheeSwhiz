@@ -1,6 +1,7 @@
+'use strict';
 
 exports.up = function(knex, Promise) {
-  knex.schema.createTable('cheeses', (table) => {
+  return knex.schema.createTable('cheeses', (table) => {
     table.increments('id');
     table.string('name').notNullable().defaultTo('');
     table.integer('animal_id').notNullable().references('id').inTable('animals').onDelete('CASCADE');
@@ -10,5 +11,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  knex.schema.dropTable('cheeses');
+  return knex.schema.dropTable('cheeses');
 };

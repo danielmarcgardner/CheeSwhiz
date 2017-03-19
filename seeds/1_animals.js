@@ -11,6 +11,6 @@ exports.seed = function(knex, Promise) {
         knex('animals').insert({ id: 4, animal: 'buffalo' })
       ]);
     }).then(function() {
-      return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`);
+      return knex.raw(`SELECT setval('animals_id_seq', (SELECT MAX(id) FROM animals))`);
     });
 };

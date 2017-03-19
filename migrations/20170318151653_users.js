@@ -1,6 +1,7 @@
+'use strict';
 
 exports.up = function(knex, Promise) {
-  knex.schema.createTable('users', (table) => {
+  return knex.schema.createTable('users', (table) => {
     table.increments('id');
     table.string('email').notNullable().defaultTo('');
     table.string('hashed_password').notNullable();
@@ -9,5 +10,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  knex.schema.dropTable('users');
+  return knex.schema.dropTable('users');
 };

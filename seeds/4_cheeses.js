@@ -455,6 +455,6 @@ exports.seed = function(knex, Promise) {
         })
       ]);
     }).then(function() {
-      return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`);
+      return knex.raw(`SELECT setval('cheeses_id_seq', (SELECT MAX(id) FROM cheeses))`);
     });
 };

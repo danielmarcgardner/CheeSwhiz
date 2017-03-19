@@ -24,13 +24,13 @@ exports.seed = function(knex, Promise) {
           super: false
         }),
         knex('users').insert({
-          id: 4, true
+          id: 4,
           email: 'klam@earthlink.net',
           hashed_password: '$2a$10$jT3FoTu2zmqydmtrk06j6.UVaFMHOQ3VfrEsv9/ESTv4uJch.PShy', //cheese4
           super: false
         })
       ]);
     }).then(function() {
-      return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`);
+      return knex.raw(`SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))`);
     });
 };

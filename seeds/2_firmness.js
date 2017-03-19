@@ -5,12 +5,12 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return Promise.all([
-        knex('firmness').insert({ id: 1, animal: 'hard' }),
-        knex('firmness').insert({ id: 2, animal: 'semi-hard' }),
-        knex('firmness').insert({ id: 3, animal: 'semi-soft' }),
-        knex('firmness').insert({ id: 4, animal: 'soft' })
+        knex('firmness').insert({ id: 1, firmness: 'hard' }),
+        knex('firmness').insert({ id: 2, firmness: 'semi-hard' }),
+        knex('firmness').insert({ id: 3, firmness: 'semi-soft' }),
+        knex('firmness').insert({ id: 4, firmness: 'soft' })
       ])
     }).then(function() {
-      return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`);
+      return knex.raw(`SELECT setval('firmness_id_seq', (SELECT MAX(id) FROM firmness))`);
     });
 };
