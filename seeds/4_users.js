@@ -30,5 +30,7 @@ exports.seed = function(knex, Promise) {
           super: false
         })*/
       ]);
+    }).then(function() {
+      return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`);
     });
 };
