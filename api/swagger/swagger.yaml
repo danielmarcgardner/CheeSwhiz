@@ -55,7 +55,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/CheeseArray"
+            $ref: "#/definitions/Cheese"
         # responses may fall through to errors
         "400":
           description: Bad Request
@@ -585,6 +585,9 @@ definitions:
       animal:
         type: string
         description: The animal milk it is made of
+      user_id:
+        type: integer
+        description: The optional user_id. Can be null.
           
   UpdateCheese:
     description: Updating a cheese in the database
