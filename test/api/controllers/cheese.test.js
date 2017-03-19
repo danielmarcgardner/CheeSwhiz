@@ -32,7 +32,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
   describe('GET /api/cheese', function() {
     it('returns a json with the status 200', (done) => {
-      reques(app)
+      request(app)
       .get('/api/cheese')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
