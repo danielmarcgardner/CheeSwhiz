@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
     table.increments('id');
     table.integer('user_id').notNullable().references('id').inTable('users');
     table.integer('cheese_id').notNullable().references('id').inTable('cheeses');
+    table.string('notes');
   });
 };
 
