@@ -7,20 +7,116 @@ process.env.NODE_ENV = 'test';
 
 beforeEach((done) => {
   knex.migrate.latest()
-  .then((done) => {
-    knex.seed.run()
+  .then(() =>{
+  return Promise.all([
+    knex('animals').insert({ id: 1, animal: 'cow' }),
+    knex('animals').insert({ id: 2, animal: 'goat' }),
+    knex('animals').insert({ id: 3, animal: 'sheep' }),
+    knex('animals').insert({ id: 4, animal: 'buffalo' })
+  ])
+  })
+    .then(function() {
+      return knex.raw(`SELECT setval('animals_id_seq', (SELECT MAX(id) FROM animals))`)
+    })
+    .then(function() {
+      return Promise.all([
+        knex('firmness').insert({ id: 1, firmness: 'hard' }),
+        knex('firmness').insert({ id: 2, firmness: 'semi-hard' }),
+        knex('firmness').insert({ id: 3, firmness: 'semi-soft' }),
+        knex('firmness').insert({ id: 4, firmness: 'soft' })
+      ])
+    })
+    .then(function() {
+      return knex.raw(`SELECT setval('firmness_id_seq', (SELECT MAX(id) FROM firmness))`)
+    })
+    .then(function(){
+      return Promise.all([
+        knex('users').insert({
+          id: 1,
+          email: 'reidpierredelahunt@gmail.com',
+          hashed_password: '$2a$10$MRUMlhoWF9v7OwC53j.x3OL/R7FNmxbjHO30ZxOpPeHx.esnpSxtO', //cheese1
+          super: true
+        }),
+        knex('users').insert({
+          id: 2,
+          email: 'daniel.marc.gardner@gmail.com',
+          hashed_password: '$2a$10$ndDF1KKZ49JMiDPn5c9xI.rqICqIm72l4bMxLQ4xTZmpk9qM0YCTq', //cheese2
+          super: true
+        })
+      ])
+    })
+    .then(function() {
+      return knex.raw(`SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))`)
+    })
+  .then(() => {
+    return Promise.all([
+      knex('cheeses').insert({
+        id: 1,
+        name: 'Manchego',
+        animal_id: 3,
+        firmness_id: 1,
+        user_id: 1
+      }),
+      knex('cheeses').insert({
+        id: 2,
+        name: 'Cheddar',
+        animal_id: 1,
+        firmness_id: 2,
+        user_id: 1
+      }),
+      knex('cheeses').insert({
+        id: 3,
+        name: 'Chevre Bucheron',
+        animal_id: 2,
+        firmness_id: 4,
+        user_id: 1
+      }),
+      knex('cheeses').insert({
+        id: 4,
+        name: 'Buffalo Blue',
+        animal_id: 4,
+        firmness_id: 3,
+        user_id: 1
+      })
+    ])
+  })
+  .then(function() {
+    return knex.raw(`SELECT setval('cheeses_id_seq', (SELECT MAX(id) FROM cheeses))`)
   })
   .then(() => {
-    done()
+    return Promise.all([
+      knex('favorites').insert({
+        id: 1,
+        user_id: 1,
+        cheese_id: 1
+      }),
+      knex('favorites').insert({
+        id: 2,
+        user_id: 1,
+        cheese_id: 2
+      }),
+      knex('favorites').insert({
+        id: 3,
+        user_id: 2,
+        cheese_id: 3
+      }),
+      knex('favorites').insert({
+        id: 4,
+        user_id: 2,
+        cheese_id: 4
+      })
+    ])
   })
-  .catch((err) => {
-    done(err)
+  .then(function() {
+    return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`)
   })
+  .then(() => done());
 });
 
 afterEach((done) => {
   knex.migrate.rollback()
   .then(() => {
+    console.log('I am here!!')
     done()
   })
   .catch((err) => {
@@ -44,14 +140,32 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         .get('/api/cheese')
         .set('Accept', 'application/json')
         .end((err, res) => {
-          should.not.exist(err);
-
-          expect(res.body).to.deep.equall([
+          expect(res.body).to.deep.equal([
             {
-            //insert data here!!!
+              id:1,
+              name: 'Manchego',
+              animal: 'sheep',
+              firmness: 'hard'
+            },
+            {
+              id:2,
+              name: 'Cheddar',
+              animal: 'cow',
+              firmness: 'semi-hard'
+            },
+            {
+              id:3,
+              name: 'Chevre Bucheron',
+              animal: 'goat',
+              firmness: 'soft'
+            },
+            {
+              id:4,
+              name: 'Buffalo Blue',
+              animal: 'buffalo',
+              firmness: 'semi-soft'
             }
           ])
-
           done();
         });
     });
@@ -59,13 +173,13 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
   describe('POST /api/cheese', function() {
     it('should add a cheese to the database', function(done) {
       const newCheese = {
-        name: 'Pule',
-        milk: 8, //Will change based on what our data dictates
-        firmness: 8, //Will change based on what our data dictates
-        user_id: 1 //optional parameter
+        name: 'Mahon',
+        animal_id: 1,
+        firmness_id: 1,
+        user_id: 1
       }
 
-      request(server)
+      request(app)
         .post('/api/cheese')
         .type('form')
         .send(newCheese)
@@ -73,14 +187,13 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          should.not.exist(err);
-          expect(res.body).to.deep.equall([
+          expect(res.body).to.deep.equal([
             {
-              name: 'Pule',
-              milk: 8, //Will change based on what our data dictates
-              firmness: 8, //Will change based on what our data dictates
-              user_id: 1, //optional parameter
-              id: 10 // Will change based on wht our data dictates
+              id: 5,
+              name: 'Mahon',
+              animal_id: 1,
+              firmness_id: 1,
+              user_id: 1
             }
           ])
           done();
@@ -88,11 +201,11 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     });
     it('it should return a 400 Bad Request when not name is not present', (done) => {
       const newBadCheese = {
-        milk: 8, //Will change based on what our data dictates
-        firmness: 8, //Will change based on what our data dictates
-        user_id: 1 //optional parameter
+        animal_id: 1,
+        firmness_id: 1,
+        user_id: 1
       }
-      request(server)
+      request(app)
         .post('/api/cheese')
         .type('form')
         .send(newBadCheese)
@@ -103,11 +216,11 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
     it('it should return a 400 Bad Request when not firmness is not present', (done) => {
       const newBadCheese = {
-        name: 'Pule',
-        milk: 8, //Will change based on what our data dictates
-        user_id: 1 //optional parameter
+        name: 'Mahon',
+        animal_id: 1,
+        user_id: 1
       }
-      request(server)
+      request(app)
         .post('/api/cheese')
         .type('form')
         .send(newBadCheese)
@@ -118,11 +231,11 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
     it('it should return a 400 Bad Request when not milk is not present', (done) => {
       const newBadCheese = {
-        name: 'Pule',
-        firmness: 8, //Will change based on what our data dictates
-        user_id: 1 //optional parameter
+        name: 'Mahon',
+        firmness_id: 1,
+        user_id: 1
       }
-      request(server)
+      request(app)
         .post('/api/cheese')
         .type('form')
         .send(newBadCheese)
@@ -134,11 +247,11 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('it should return a 400 Bad Request when cheese already exists in database', (done) => {
       const newBadCheese = {
         name: 'Manchego',
-        firmness: 1, //Will change based on what our data dictates
-        animal: 2, //Will change based on what our data dictates
-        user_id: 1 //optional parameter
+        firmness_id: 3,
+        animal_id: 1,
+        user_id: 1
       }
-      request(server)
+      request(app)
         .post('/api/cheese')
         .type('form')
         .send(newBadCheese)
@@ -152,24 +265,23 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should update a cheese at a given id', (done) => {
       const updatedCheese = {
         name: 'Manchego',
-        firmness: 2
+        firmness_id: 2
       }
-      request(server)
-        .patch('/api/cheese/1') //DEPENDING ON WHAT MANCHEGO IS!!!
+      request(app)
+        .patch('/api/cheese/1')
         .type('form')
-        .send(newBadCheese)
+        .send(updatedCheese)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          should.not.exist(err);
-          expect(res.body).to.deep.equall([
+          expect(res.body).to.deep.equal([
             {
+              id: 1,
               name: 'Manchego',
-              milk: 1, //Will change based on what our data dictates
-              firmness: 1, //Will change based on what our data dictates
-              user_id: 1, //optional parameter
-              id: 1 // Will change based on wht our data dictates
+              animal_id: 3,
+              firmness_id: 2,
+              user_id: 1
             }
           ])
           done();
@@ -178,10 +290,10 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should return a 404 not found if the id does not exist', (done) => {
       const updatedCheese = {
         name: 'Manchego',
-        firmness: 2
+        firmness_id: 2
       }
-      request(server)
-        .patch('/api/cheese/9000') //DEPENDING ON WHAT MANCHEGO IS!!!
+      request(app)
+        .patch('/api/cheese/9000')
         .type('form')
         .send(updatedCheese)
         .set('Accept', 'application/json')
@@ -190,27 +302,27 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     })
   })
   describe('DELETE /cheese/{id}', (done) => {
-      request(server)
-        .del('/api/cheese/1') //DEPENDING ON WHAT CHEESE ID = 1 IS!!!
+    it('Should return the deleted cheese information', (done) => {
+      request(app)
+        .del('/api/cheese/1')
         .type('form')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          should.not.exist(err);
-          expect(res.body).to.deep.equall([
+          expect(res.body).to.deep.equal([
             {
+              id: 1,
               name: 'Manchego',
-              milk: 1, //Will change based on what our data dictates
-              firmness: 2, //Will change based on what our data dictates
-              user_id: 1, //optional parameter
-              id: 1 // Will change based on wht our data dictates
+              animal_id: 3,
+              firmness_id: 2,
+              user_id: 1
             }
           ])
           done();
         });
     })
     it('Should return a 404 not found if the id does not exist', (done) => {
-      request(server)
+      request(app)
         .patch('/api/cheese/9000')
         .type('form')
         .set('Accept', 'application/json')
