@@ -350,8 +350,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         .patch('/api/cheese/9000')
         .send(updatedCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(404,'Cheese not found!', done)
+        // .expect('Content-Type', /plain/)
+        .expect(404, JSON.stringify('Cheese Not Found'), done)
     })
   })
   describe('DELETE /cheese/{id}', (done) => {

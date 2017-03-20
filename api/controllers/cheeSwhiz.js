@@ -58,11 +58,6 @@ function postCheese(req, res) {
   })
   .then((namesOfTheCheeses) => {
     if (namesOfTheCheeses.indexOf(name) >= 0) {
-      //ASK JOSH OR HAMID ABOUT THIS!!!!!!!!!!!!!!!!!!!!!!!!
-      console.log('This Cheese Is In The DATABASE!!!!')
-      // console.log(res)
-      // res.set("Content-Type", "text/plain");
-      // throw SwaggerExpress.errors.notFound('Cheese')
       res.status(400).json('This Cheese is in the Database')
     }
     else {
@@ -90,17 +85,18 @@ function updatedCheese(req, res, next) {
   knex('cheeses').max('id')
   .then((maxNum) => {
     if (maxNum[0].max < id || id < 0) {
-      console.log("I am an invalid request!!")
-
+      res.status(404).json('Cheese Not Found')
+    }
+    else {
+      const updatedVersion = req.body
+      knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
+      .then((cheese) => {
+        res.status(200).json(cheese);
+      }).catch((err) => {
+        console.error(err);
+      });
     }
   })
-  const updatedVersion = req.body
-  knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
-  .then((cheese) => {
-    res.status(200).json(cheese);
-  }).catch((err) => {
-    console.error(err);
-  });
 }
 
 module.exports = {
