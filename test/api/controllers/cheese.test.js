@@ -309,10 +309,10 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
+        // .set('Accept', 'application/json')
         .send(newBadCheese)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', "text/plain")
-        .expect(400,'Cheese already exists!', done)
+        // .expect('Content-Type', "application/json", done)
+        .expect(400, JSON.stringify('This Cheese is in the Database'), done)
     })
   });
 

@@ -1,4 +1,5 @@
 var SwaggerExpress = require('swagger-express-mw')
+const bodyParser = require('body-parser')
 
 function allCheese(req, res) {
   const knex = require('../../knex.js');
@@ -56,18 +57,15 @@ function postCheese(req, res) {
     return nameOfCheesesInDB
   })
   .then((namesOfTheCheeses) => {
-    console.log(name)
-    console.log(namesOfTheCheeses)
     if (namesOfTheCheeses.indexOf(name) >= 0) {
       //ASK JOSH OR HAMID ABOUT THIS!!!!!!!!!!!!!!!!!!!!!!!!
       console.log('This Cheese Is In The DATABASE!!!!')
       // console.log(res)
-      res.set("Content-Type", "text/plain");
+      // res.set("Content-Type", "text/plain");
       // throw SwaggerExpress.errors.notFound('Cheese')
-      return res.status(400).send('Cheese already exists!')
+      res.status(400).json('This Cheese is in the Database')
     }
     else {
-      console.log('I exist');
       const newCheese = {
         name: req.body.name,
         animal_id: animal,
