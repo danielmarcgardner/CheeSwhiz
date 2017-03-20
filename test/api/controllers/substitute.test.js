@@ -8,46 +8,46 @@ process.env.NODE_ENV = 'test';
 beforeEach((done) => {
   knex.migrate.latest()
   .then(() =>{
-  return Promise.all([
-    knex('animals').insert({ id: 1, animal: 'cow' }),
-    knex('animals').insert({ id: 2, animal: 'goat' }),
-    knex('animals').insert({ id: 3, animal: 'sheep' }),
-    knex('animals').insert({ id: 4, animal: 'buffalo' })
-  ])
+    return Promise.all([
+      knex('animals').insert({ id: 1, animal: 'cow' }),
+      knex('animals').insert({ id: 2, animal: 'goat' }),
+      knex('animals').insert({ id: 3, animal: 'sheep' }),
+      knex('animals').insert({ id: 4, animal: 'buffalo' })
+    ])
   })
-    .then(function() {
-      return knex.raw(`SELECT setval('animals_id_seq', (SELECT MAX(id) FROM animals))`)
-    })
-    .then(function() {
-      return Promise.all([
-        knex('firmness').insert({ id: 1, firmness: 'hard' }),
-        knex('firmness').insert({ id: 2, firmness: 'semi-hard' }),
-        knex('firmness').insert({ id: 3, firmness: 'semi-soft' }),
-        knex('firmness').insert({ id: 4, firmness: 'soft' })
-      ])
-    })
-    .then(function() {
-      return knex.raw(`SELECT setval('firmness_id_seq', (SELECT MAX(id) FROM firmness))`)
-    })
-    .then(function(){
-      return Promise.all([
-        knex('users').insert({
-          id: 1,
-          email: 'reidpierredelahunt@gmail.com',
-          hashed_password: '$2a$10$MRUMlhoWF9v7OwC53j.x3OL/R7FNmxbjHO30ZxOpPeHx.esnpSxtO', //cheese1
-          super: true
-        }),
-        knex('users').insert({
-          id: 2,
-          email: 'daniel.marc.gardner@gmail.com',
-          hashed_password: '$2a$10$ndDF1KKZ49JMiDPn5c9xI.rqICqIm72l4bMxLQ4xTZmpk9qM0YCTq', //cheese2
-          super: true
-        })
-      ])
-    })
-    .then(function() {
-      return knex.raw(`SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))`)
-    })
+  .then(function() {
+    return knex.raw(`SELECT setval('animals_id_seq', (SELECT MAX(id) FROM animals))`)
+  })
+  .then(function() {
+    return Promise.all([
+      knex('firmness').insert({ id: 1, firmness: 'hard' }),
+      knex('firmness').insert({ id: 2, firmness: 'semi-hard' }),
+      knex('firmness').insert({ id: 3, firmness: 'semi-soft' }),
+      knex('firmness').insert({ id: 4, firmness: 'soft' })
+    ])
+  })
+  .then(function() {
+    return knex.raw(`SELECT setval('firmness_id_seq', (SELECT MAX(id) FROM firmness))`)
+  })
+  .then(function(){
+    return Promise.all([
+      knex('users').insert({
+        id: 1,
+        email: 'reidpierredelahunt@gmail.com',
+        hashed_password: '$2a$10$MRUMlhoWF9v7OwC53j.x3OL/R7FNmxbjHO30ZxOpPeHx.esnpSxtO', //cheese1
+        super: true
+      }),
+      knex('users').insert({
+        id: 2,
+        email: 'daniel.marc.gardner@gmail.com',
+        hashed_password: '$2a$10$ndDF1KKZ49JMiDPn5c9xI.rqICqIm72l4bMxLQ4xTZmpk9qM0YCTq', //cheese2
+        super: true
+      })
+    ])
+  })
+  .then(function() {
+    return knex.raw(`SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))`)
+  })
   .then(() => {
     return Promise.all([
       knex('cheeses').insert({

@@ -268,7 +268,7 @@ paths:
 
   /cheese/substitute/{cheesename}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a substitute cheese.
       description: Find cheeses that share the same animal milk and firmness of the cheese being searched for.

@@ -52,10 +52,14 @@ function findCheeseByName(req, res) {
     res.set('Content-Type', 'plain');
     res.status(404).send('Name parameter must not be blank.');
   }
-  return knex('cheeses').where('cheeses.name', name)
+  return knex('cheeses')
+  .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+  .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+  .where('cheeses.name', name)
   .then((oneOrNone) => {
     console.log(oneOrNone);
-    if (oneOrNone.length !== 0) {
+    if (oneOrNone.length === 0) {
       res.set('Content-Type', 'plain');
       res.status(200).send('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
     }
@@ -66,8 +70,39 @@ function findCheeseByName(req, res) {
   });
 }
 
+function substituteCheese(req, res) {
+  const knex = require('../../knex.js');
+  const name = req.swagger.params.name.value;
+  if (!name) {
+    res.set('Content-Type', 'plain');
+    res.status(404).send('Name parameter must not be blank.');
+  }
+  return knex('cheeses')
+  .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+  .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+  .where('cheeses.name', name)
+  .then((oneOrNone) => {
+    if (oneOrNone.length === 0) {
+      res.set('Content-Type', 'plain');
+      res.status(200).send('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
+    }
+    const cheeseToReplace = {
+      id: oneOrNone.
+    }
+  }).then((cheeseToReplace) => {
+    return knex('cheeses')
+    .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+    .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+    .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+    .where('cheeses.name', name)
+  })
+
+}
+
 module.exports = {
   findCheeseByFirmness: findCheeseByFirmness,
   findCheeseByAnimal: findCheeseByAnimal,
-  findCheeseByName: findCheeseByName
+  findCheeseByName: findCheeseByName,
+  substituteCheese: substituteCheese
 }
