@@ -116,7 +116,6 @@ beforeEach((done) => {
 afterEach((done) => {
   knex.migrate.rollback()
   .then(() => {
-    console.log('I am here!!')
     done()
   })
   .catch((err) => {
@@ -181,7 +180,6 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
       request(app)
         .post('/api/cheese')
-        .type('form')
         .send(newCheese)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -207,11 +205,30 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        .type('form')
         .send(newBadCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(400,'Name must not be blank!', done)
+        .expect('Content-Type', 'application/json')
+        .expect(400)
+        .end(function(err, res) {
+          expect(res.body).to.deep.equal(
+            {
+              "message":"Request validation failed: Parameter (Cheese) failed schema validation",
+              "code":"SCHEMA_VALIDATION_FAILED",
+              "failedValidation":true,
+              "results":{
+                "errors":[
+                  {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+                  "message":"Missing required property: name",
+                  "path":[],
+                  "description":"Adding new cheese to the databse."}
+                ],
+                "warnings":[]
+              },
+              "path":["paths","/cheese","post","parameters","0"],
+              "paramName":"Cheese"
+            }          )
+          done();
+        });
     })
 
     it('it should return a 400 Bad Request when not firmness is not present', (done) => {
@@ -222,14 +239,33 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        .type('form')
         .send(newBadCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(400,'Firmness must not be blank!', done)
+        .expect('Content-Type', 'application/json')
+        .expect(400)
+        .end(function(err, res) {
+          expect(res.body).to.deep.equal(
+            {
+              "message":"Request validation failed: Parameter (Cheese) failed schema validation",
+              "code":"SCHEMA_VALIDATION_FAILED",
+              "failedValidation":true,
+              "results":{
+                "errors":[
+                  {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+                  "message":"Missing required property: firmness_id",
+                  "path":[],
+                  "description":"Adding new cheese to the databse."}
+                ],
+                "warnings":[]
+              },
+              "path":["paths","/cheese","post","parameters","0"],
+              "paramName":"Cheese"
+            }          )
+          done();
+        });
     })
 
-    it('it should return a 400 Bad Request when not milk is not present', (done) => {
+    it('it should return a 400 Bad Request when not animal_id is not present', (done) => {
       const newBadCheese = {
         name: 'Mahon',
         firmness_id: 1,
@@ -237,11 +273,31 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        .type('form')
         .send(newBadCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(400,'Animal must not be blank!', done)
+        .expect('Content-Type', 'application/json')
+        .expect(400)
+        .end(function(err, res) {
+          expect(res.body).to.deep.equal(
+            {
+              "message":"Request validation failed: Parameter (Cheese) failed schema validation",
+              "code":"SCHEMA_VALIDATION_FAILED",
+              "failedValidation":true,
+              "results":{
+                "errors":[
+                  {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+                  "message":"Missing required property: animal_id",
+                  "path":[],
+                  "description":"Adding new cheese to the databse."}
+                ],
+                "warnings":[]
+              },
+              "path":["paths","/cheese","post","parameters","0"],
+              "paramName":"Cheese"
+            }
+          )
+          done();
+        });
     })
 
     it('it should return a 400 Bad Request when cheese already exists in database', (done) => {
@@ -253,10 +309,9 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        .type('form')
         .send(newBadCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(400,'Cheese already exists!', done)
     })
   });
@@ -269,7 +324,6 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .patch('/api/cheese/1')
-        .type('form')
         .send(updatedCheese)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -294,7 +348,6 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .patch('/api/cheese/9000')
-        .type('form')
         .send(updatedCheese)
         .set('Accept', 'application/json')
         .expect('Content-Type', /plain/)
@@ -305,7 +358,6 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should return the deleted cheese information', (done) => {
       request(app)
         .del('/api/cheese/1')
-        .type('form')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -324,7 +376,6 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should return a 404 not found if the id does not exist', (done) => {
       request(app)
         .patch('/api/cheese/9000')
-        .type('form')
         .set('Accept', 'application/json')
         .expect('Content-Type', /plain/)
         .expect(404,'Cheese not found!', done)
