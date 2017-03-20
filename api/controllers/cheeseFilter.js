@@ -88,7 +88,7 @@ function substituteCheese(req, res) {
       res.status(200).send('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
     }
     const cheeseToReplace = {
-      id: oneOrNone.
+      id: oneOrNone
     }
   }).then((cheeseToReplace) => {
     return knex('cheeses')
