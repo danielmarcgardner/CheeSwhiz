@@ -67,6 +67,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cheese/{id}:
+    x-swagger-router-controller: cheeSwhiz
     patch:
       summary: Update one of our cheeses!
       description: Does one of our cheeses have the wrong information? If so, submit an update.
