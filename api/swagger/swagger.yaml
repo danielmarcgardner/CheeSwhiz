@@ -139,7 +139,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /findcheese/{zip}/{distance}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseShop
     get:
       summary: Find cheese stores in your area
       description: This route makes a yelp api call for cheese stores in your area so you can go out and find the cheese that you want.
@@ -175,7 +175,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /cheese/firmness/{type}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find cheeses by firmness
       description: Search through our cheese database and find cheeses by their firmness.
