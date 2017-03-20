@@ -1,6 +1,8 @@
+var SwaggerExpress = require('swagger-express-mw')
 const bodyParser = require('body-parser');
 
-function giveMeThatCheese(req, res) {
+function cheeseShop(req, res) {
+  console.log('im here');
   const zip = req.params.zip,
         radiusLimit = getMeters(req.params.distance);
   if (!zip || !radiusLimit || Number.isNaN(zip) || Number.isNaN(radiusLimit) || zip.length !== 5) {
@@ -11,12 +13,14 @@ function giveMeThatCheese(req, res) {
     else if (Number.isNaN(radiusLimit)) { res.status(400).send('Your distance figure must be an integer!')}
   }
   const request = require('request');
-  request(`https://api.yelp.com/v2/search/?term=Gourmet%20Cheese&location=${zip}&radius_filter=${radiusLimit}&category_filter=cheese,grocery`, function(error, response, body) {
-
-  })
+  console.log(request(`https://api.yelp.com/v2/search/?term=Gourmet%20Cheese&location=${zip}&radius_filter=${radiusLimit}&category_filter=cheese,grocery`, function(error, response, body) {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body); // Print the HTML for the Google homepage.
+  }))
   function getMeters(i) {
     return Math.round(i*1609.344);
   }
 }
 
-module.exports = { giveMeThatCheese: giveMeThatCheese }
+module.exports = { cheeseShop: cheeseShop }
