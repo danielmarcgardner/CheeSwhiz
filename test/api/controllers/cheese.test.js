@@ -309,10 +309,10 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
+        // .set('Accept', 'application/json')
         .send(newBadCheese)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', "text/plain")
-        .expect(400,'Cheese already exists!', done)
+        // .expect('Content-Type', "application/json", done)
+        .expect(400, JSON.stringify('This Cheese is in the Database'), done)
     })
   });
 
@@ -350,8 +350,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         .patch('/api/cheese/9000')
         .send(updatedCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(404,'Cheese not found!', done)
+        // .expect('Content-Type', /plain/)
+        .expect(404, JSON.stringify('Cheese Not Found'), done)
     })
   })
   describe('DELETE /cheese/{id}', (done) => {

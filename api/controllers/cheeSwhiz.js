@@ -1,4 +1,5 @@
 var SwaggerExpress = require('swagger-express-mw')
+const bodyParser = require('body-parser')
 
 function allCheese(req, res) {
   const knex = require('../../knex.js');
@@ -56,18 +57,10 @@ function postCheese(req, res) {
     return nameOfCheesesInDB
   })
   .then((namesOfTheCheeses) => {
-    console.log(name)
-    console.log(namesOfTheCheeses)
     if (namesOfTheCheeses.indexOf(name) >= 0) {
-      //ASK JOSH OR HAMID ABOUT THIS!!!!!!!!!!!!!!!!!!!!!!!!
-      console.log('This Cheese Is In The DATABASE!!!!')
-      // console.log(res)
-      res.set("Content-Type", "text/plain");
-      // throw SwaggerExpress.errors.notFound('Cheese')
-      return res.status(400).send('Cheese already exists!')
+      res.status(400).json('This Cheese is in the Database')
     }
     else {
-      console.log('I exist');
       const newCheese = {
         name: req.body.name,
         animal_id: animal,
@@ -92,17 +85,18 @@ function updatedCheese(req, res, next) {
   knex('cheeses').max('id')
   .then((maxNum) => {
     if (maxNum[0].max < id || id < 0) {
-      console.log("I am an invalid request!!")
-
+      res.status(404).json('Cheese Not Found')
+    }
+    else {
+      const updatedVersion = req.body
+      knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
+      .then((cheese) => {
+        res.status(200).json(cheese);
+      }).catch((err) => {
+        console.error(err);
+      });
     }
   })
-  const updatedVersion = req.body
-  knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
-  .then((cheese) => {
-    res.status(200).json(cheese);
-  }).catch((err) => {
-    console.error(err);
-  });
 }
 
 module.exports = {
