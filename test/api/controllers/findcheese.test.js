@@ -12,8 +12,8 @@ describe('CheeSwhiz /findcheese/{zip}/{distance} route', (done) => {
       .get('/findcheese/94115/1500')
       .set('Accept', 'application/json')
       .end((err, res) => {
-        should.not.exist(err);
-        expect(res.body).to.deep.equall( [
+        // should.not.exist(err);
+        expect(res.body).to.deep.equal( [
         {
             "rating": 4.5,
             "name": "Bi-Rite Market",
