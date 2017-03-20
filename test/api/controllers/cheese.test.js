@@ -311,7 +311,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         .post('/api/cheese')
         .send(newBadCheese)
         .set('Accept', 'application/json')
-        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect('Content-Type', "text/plain")
         .expect(400,'Cheese already exists!', done)
     })
   });
