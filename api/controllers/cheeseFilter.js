@@ -2,7 +2,7 @@ const SwaggerExpress = require('swagger-express-mw');
 
 function findCheeseByFirmness(req, res) {
   const knex = require('../../knex.js');
-  const firmness = req.params.firmness;
+  const firmness = req.swagger.params.firmness.value;
   const validFirmnessLevels = ['soft', 'semi-soft', 'semi-hard', 'hard'];
   if (validFirmnessLevels.indexOf(firmness) === -1 || !firmness) {
     res.set('Content-Type', 'plain');
@@ -24,7 +24,7 @@ function findCheeseByFirmness(req, res) {
 
 function findCheeseByAnimal(req, res) {
   const knex = require('../../knex.js');
-  const animal = req.params.animal;
+  const animal = req.swagger.params.animal.value;
   const validAnimals = ['cow', 'buffalo', 'sheep', 'goat'];
   if (validAnimals.indexOf(animal) === -1 || !animal) {
     res.set('Content-Type', 'plain');
@@ -47,13 +47,23 @@ function findCheeseByAnimal(req, res) {
 
 function findCheeseByName(req, res) {
   const knex = require('../../knex.js');
-  const name = req.params.name;
+  const name = req.swagger.params.name.value;
   if (!name) {
     res.set('Content-Type', 'plain');
-    res.status(404).send('Invalid Parameter!');
+    res.status(404).send('Name parameter must not be blank.');
   }
-
-
+  return knex('cheeses').where('cheeses.name', name)
+  .then((oneOrNone) => {
+    console.log(oneOrNone);
+    if (oneOrNone.length !== 0) {
+      res.set('Content-Type', 'plain');
+      res.status(200).send('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
+    }
+    res.set('Content-Type', 'plain');
+    res.status(200).send(oneOrNone[0]);
+  }).catch((err) => {
+    console.error(err);
+  });
 }
 
 module.exports = {

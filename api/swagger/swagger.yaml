@@ -203,7 +203,7 @@ paths:
 
   /cheese/animal/{type}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find cheeses by animal milk
       description: Search through our cheese database and find cheeses by their the animal milk.
@@ -233,16 +233,16 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/specific/{type}:
+  /cheese/specific/{name}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a specific cheese by name.
       description:  Search through our cheese database and find a specific cheese by it's name.
       # used as the method name of the controller
       operationId: findCheeseByName
       parameters:
-        - name: type
+        - name: name
           in: path
           description: Enter the name of the cheese you would like.
           required: true
