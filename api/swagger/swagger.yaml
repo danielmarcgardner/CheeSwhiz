@@ -343,7 +343,7 @@ paths:
 
   /user/register:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: register
     post:
       summary: Register a new user.
       description: This is where new users can create an account with CheeSwhiz.
@@ -381,8 +381,8 @@ paths:
 
   /user/login:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
-    get:
+    x-swagger-router-controller: login
+    post:
       summary: Log a user into CheeSwhiz.
       description: Log a user into CheeSwhiz so that they can access their favorites.
       # used as the method name of the controller
@@ -400,7 +400,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/Token"
+            $ref: "#/definitions/loggedIn"
         # responses may fall through to errors
         "400":
           description: Email and Password didn't match.
@@ -864,6 +864,21 @@ definitions:
       favorite_id:
         type: integer
         description: The primary key in the favorites table.
+
+  loggedIn:
+    required:
+      - email
+      - id
+    properties:
+      email:
+        type: string
+        description: The users email.
+      id:
+        type: integer
+        description: The users id.
+      token:
+        type: string
+        description: The users validation token sent as a cookie.
 
   ErrorResponse:
     required:
