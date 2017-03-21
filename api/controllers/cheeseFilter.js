@@ -2,7 +2,7 @@ const SwaggerExpress = require('swagger-express-mw');
 
 function findCheeseByFirmness(req, res) {
   const knex = require('../../knex.js');
-  const firmness = req.swagger.params.firmness.value;
+  const firmness = req.swagger.params.type.value;
   const validFirmnessLevels = ['soft', 'semi-soft', 'semi-hard', 'hard'];
   if (validFirmnessLevels.indexOf(firmness) === -1 || !firmness) {
     res.set('Content-Type', 'plain');
@@ -11,7 +11,7 @@ function findCheeseByFirmness(req, res) {
   return knex('cheeses')
   .join('animals', 'animals.id', '=', 'cheeses.animal_id')
   .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
   .where('firmness.firmness', firmness)
   .orderBy('id', 'asc')
   .then((cheeses) => {
@@ -55,16 +55,17 @@ function findCheeseByName(req, res) {
   return knex('cheeses')
   .join('animals', 'animals.id', '=', 'cheeses.animal_id')
   .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
   .where('cheeses.name', name)
   .then((oneOrNone) => {
-    console.log(oneOrNone);
+    // console.log(oneOrNone);
     if (oneOrNone.length === 0) {
+      console.log('NONE');
       res.set('Content-Type', 'plain');
       res.status(200).send('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
     }
-    res.set('Content-Type', 'plain');
-    res.status(200).send(oneOrNone[0]);
+    res.set('Content-Type', 'application/json');
+    res.status(200).send(oneOrNone);
   }).catch((err) => {
     console.error(err);
   });
