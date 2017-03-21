@@ -139,8 +139,8 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /findcheese/{zip}/{distance}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
-    get:
+    x-swagger-router-controller: cheeseShop
+    post:
       summary: Find cheese stores in your area
       description: This route makes a yelp api call for cheese stores in your area so you can go out and find the cheese that you want.
       # used as the method name of the controller
@@ -175,7 +175,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /cheese/firmness/{type}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find cheeses by firmness
       description: Search through our cheese database and find cheeses by their firmness.
@@ -203,7 +203,7 @@ paths:
 
   /cheese/animal/{type}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find cheeses by animal milk
       description: Search through our cheese database and find cheeses by their the animal milk.
@@ -233,16 +233,16 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/specific/{type}:
+  /cheese/specific/{name}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a specific cheese by name.
       description:  Search through our cheese database and find a specific cheese by it's name.
       # used as the method name of the controller
       operationId: findCheeseByName
       parameters:
-        - name: type
+        - name: name
           in: path
           description: Enter the name of the cheese you would like.
           required: true
@@ -268,7 +268,7 @@ paths:
 
   /cheese/substitute/{cheesename}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a substitute cheese.
       description: Find cheeses that share the same animal milk and firmness of the cheese being searched for.

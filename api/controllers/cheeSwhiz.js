@@ -16,6 +16,11 @@ function allCheese(req, res) {
   });
 }
 
+function mw(req, res, next) {
+  console.log('hello');
+  next();
+}
+
 // function postCheese(req, res) {
 //   const knex = require('../../knex.js');
 //   const name = req.body.name;

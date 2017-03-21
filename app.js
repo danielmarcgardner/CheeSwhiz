@@ -8,6 +8,12 @@ var config = {
   appRoot: __dirname // required config
 };
 
+// function mw(req, res, next) {
+//   console.log('hello');
+//   next();
+// }
+//example of middleware
+// app.use('/api/cheese', mw);
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
 

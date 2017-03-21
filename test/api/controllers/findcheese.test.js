@@ -9,11 +9,10 @@ const expect = require('chai').expect;
 describe('CheeSwhiz /findcheese/{zip}/{distance} route', (done) => {
   it('Should return a list of cheese shops in a specified zip and distance', (done) => {
     request(app)
-      .get('/findcheese/94115/1500')
+      .get('/api/findcheese/94115/1500')
       .set('Accept', 'application/json')
       .end((err, res) => {
-        // should.not.exist(err);
-        expect(res.body).to.deep.equal( [
+        expect(res.body).to.deep.equal([
         {
             "rating": 4.5,
             "name": "Bi-Rite Market",
