@@ -81,33 +81,6 @@ beforeEach((done) => {
     ])
   })
   .then(function() {
-    return knex.raw(`SELECT setval('cheeses_id_seq', (SELECT MAX(id) FROM cheeses))`)
-  })
-  .then(() => {
-    return Promise.all([
-      knex('favorites').insert({
-        id: 1,
-        user_id: 1,
-        cheese_id: 1
-      }),
-      knex('favorites').insert({
-        id: 2,
-        user_id: 1,
-        cheese_id: 2
-      }),
-      knex('favorites').insert({
-        id: 3,
-        user_id: 2,
-        cheese_id: 3
-      }),
-      knex('favorites').insert({
-        id: 4,
-        user_id: 2,
-        cheese_id: 4
-      })
-    ])
-  })
-  .then(function() {
     return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`)
   })
   .then(() => done());
@@ -124,79 +97,104 @@ afterEach((done) => {
 })
 
 describe('CheeSwhiz /cheese/specific/{type} route', (done) => {
+  it('returns a json with the status 200', (done) => {
+    request(app)
+    .get('/api/cheese/specific/Manchego')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(200, done)
+  })
+
   it('should return information about Manchego Cheese when given the parameter Manchego', function(done) {
     request(app)
-      .get('/cheese/specific/Manchego')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/specific/Manchego')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 1,
+          name: 'Manchego',
+          animal: 'sheep',
+          firmness: 'hard',
+          user_id: 1
+        }
+      ])
+    })
+    done();
   });
 
-  it('should return information about Colby Cheese when given the parameter Colby', function(done) {
+  it('should return information about Cheddar Cheese when given the parameter Cheddar', function(done) {
     request(app)
-      .get('/cheese/specific/Colby')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/specific/Cheddar')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 2,
+          name: 'Cheddar',
+          animal: 'cow',
+          firmness: 'semi-hard',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
-  it('should return information about Idaho Goatster Cheese when given the parameter Idaho Goatster', function(done) {
+  it('should return information about Chevre Bucheron Cheese when given the parameter Chevre Bucheron', function(done) {
     request(app)
-      .get('/cheese/specific/Idaho Goatster')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/specific/Chevre Bucheron')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 3,
+          name: 'Chevre Bucheron',
+          animal: 'goat',
+          firmness: 'soft',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
-  it('should return information about Ricotta Cheese when given the parameter Ricotta', function(done) {
+  it('should return information about Buffalo Blue Cheese when given the parameter Buffalo Blue', function(done) {
     request(app)
-      .get('/cheese/specific/Ricotta')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/specific/Buffalo Blue')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 4,
+          name: 'Buffalo Blue',
+          animal: 'buffalo',
+          firmness: 'semi-soft',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
   it('should return an error when given invalid parameters', function(done) {
     request(app)
-      .get('/cheese/specific/bad')
+      .get('/api/cheese/specific/bad')
       .set('Accept', 'application/json')
       .expect('Content-Type', /plain/)
-      .expect(404,'Invalid Parameter!', done)
+      .expect(404,'Invalid Parameter!')
+      done();
   });
 });
