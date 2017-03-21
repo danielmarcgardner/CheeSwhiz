@@ -22,7 +22,8 @@
     "pg": "^6.1.4",
     "querystring": "^0.2.0",
     "request": "^2.81.0",
-    "swagger-express-mw": "^0.1.0"
+    "swagger-express-mw": "^0.1.0",
+    "yelp": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

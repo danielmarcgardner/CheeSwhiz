@@ -1,75 +1,54 @@
 var SwaggerExpress = require('swagger-express-mw')
 const bodyParser = require('body-parser');
-
-var oauthSignature = require('oauth-signature');
-var n = require('nonce')();
-var request = require('request');
-var _ = require('lodash');
-var qs = require('querystring');
-
-/* Function for yelp call
- * ------------------------
- * set_parameters: object with params to search
- * callback: callback(error, response, body)
- */
- var request_yelp = function(set_parameters) {
-
-   /* The type of request */
-   var httpMethod = 'GET';
-
-   /* The url we are using for the request */
-   var url = 'http://api.yelp.com/v2/search';
-
-   /* We can setup default parameters here */
-   var default_parameters = {
-     location: 'San+Francisco',
-     sort: '2'
-   };
+const Yelp = require('yelp');
+const dotenv = require('dotenv')
+dotenv.load();
 
 
-  /* We set the require parameters here */
-  var required_parameters = {
-    oauth_consumer_key : process.env.OAUTH_CONSUMER_KEY,
-    oauth_token : process.env.OAUTH_TOKEN,
-    oauth_nonce : n(),
-    oauth_timestamp : n().toString().substr(0,10),
-    oauth_signature_method : 'HMAC-SHA1',
-    oauth_version : '1.0'
-  };
+var yelp = new Yelp({
+  consumer_key: process.env.OAUTH_CONSUMER_KEY,
+  consumer_secret: process.env.OAUTH_CONSUMER_SECRET,
+  token: process.env.OAUTH_TOKEN,
+  token_secret: process.env.OAUTH_TOKEN_SECRET
+});
 
-  /* We combine all the parameters in order of importance */
-   var parameters = _.assign(default_parameters, set_parameters, required_parameters);
+function getMeters(i) {
+  return Math.round(i*1609.344);
+}
 
-  /* We set our secrets here */
-  var consumerSecret = process.env.OAUTH_CONSUMER_SECRET;
-  var tokenSecret = process.env.OAUTH_TOKEN_SECRET;
-
-  /* Then we call Yelp's Oauth 1.0a server, and it returns a signature */
-  /* Note: This signature is only good for 300 seconds after the oauth_timestamp */
-  var signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, { encodeSignature: false});
-
- /* We add the signature to the list of paramters */
- parameters.oauth_signature = signature;
-
- /* Then we turn the paramters object, to a query string */
- var paramURL = qs.stringify(parameters);
-
- /* Add the query string to the url */
- var apiURL = url+'?'+paramURL;
-
- /* Then we use request to send make the API Request */
- request(apiURL, function(error, response, body){
-   console.log(body)
- });
-
-};
 
 function cheeseShop(req, res) {
   const zip = Number(req.swagger.params.zip.value),
         radiusLimit = getMeters(Number(req.swagger.params.distance.value));
 
-  let cheeseStores = request_yelp('Gourmet Cheese')
-  console.log(cheeseStores)
+        yelp.search({ term: 'Gourmet Cheese', location: zip, category_filter: 'cheese', distance: radiusLimit, limit: 15 })
+        .then(function (data) {
+          for (var i = 0; i < data.businesses.length; i++) {
+            delete data.businesses[i].display_phone;
+            delete data.businesses[i].catagories;
+            delete data.businesses[i].id;
+            delete data.businesses[i].image_url;
+            delete data.businesses[i].is_claimed;
+            delete data.businesses[i].is_closed;
+            delete data.businesses[i].mobile_url;
+            delete data.businesses[i].rating_img_url;
+            delete data.businesses[i].rating_img_url_large;
+            delete data.businesses[i].rating_img_url_small;
+            delete data.businesses[i].review_count;
+            delete data.businesses[i].snippet_image_url;
+            delete data.businesses[i].snippet_text;
+            delete data.businesses[i].url;
+            delete data.businesses[i].menu_date_updated;
+            delete data.businesses[i].menu_provider;
+            delete data.businesses[i].categories;
+          }
+
+          res.json(data.businesses);
+        })
+        .catch(function (err) {
+          console.error(err);
+        });
+
   // if (!zip || !radiusLimit || Number.isNaN(zip) || Number.isNaN(radiusLimit) || zip.length !== 5) {
   //     console.log('I am here!!!!')
   //   res.set('Content-Type', 'plain');
@@ -97,9 +76,6 @@ function cheeseShop(req, res) {
   //   console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
   //   console.log('body:', body); // Print the HTML for the Google homepage.
   // })
-  function getMeters(i) {
-    return Math.round(i*1609.344);
-  }
 }
 
 module.exports = {

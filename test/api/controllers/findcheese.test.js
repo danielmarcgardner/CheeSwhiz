@@ -13,262 +13,175 @@ describe('CheeSwhiz /findcheese/{zip}/{distance} route', (done) => {
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.body).to.deep.equal([
-        {
-            "rating": 4.5,
-            "name": "Bi-Rite Market",
-            "phone": "4155517900",
-            "location": {
-                "cross_streets": "Fell St & Hayes St",
-                "city": "San Francisco",
-                "display_address": [
-                    "550 Divisadero St",
-                    "NoPa",
-                    "San Francisco, CA 94117"
-                ],
-                "geo_accuracy": 9.5,
-                "neighborhoods": [
-                    "NoPa",
-                    "Alamo Square"
-                ],
-                "postal_code": "94117",
-                "country_code": "US",
-                "address": [
-                    "550 Divisadero St"
-                ],
-                "coordinate": {
-                    "latitude": 37.7745126368117,
-                    "longitude": -122.437564575518
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 3.0,
-            "name": "Mollie Stone's",
-            "phone": "4155674902",
-            "location": {
-                "cross_streets": "Fillmore St & Steiner St",
-                "city": "San Francisco",
-                "display_address": [
-                    "2435 California St",
-                    "Lower Pacific Heights",
-                    "San Francisco, CA 94115"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "Lower Pacific Heights"
-                ],
-                "postal_code": "94115",
-                "country_code": "US",
-                "address": [
-                    "2435 California St"
-                ],
-                "coordinate": {
-                    "latitude": 37.788459777832,
-                    "longitude": -122.43473815918
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 3.5,
-            "name": "Mayflower Market",
-            "phone": "4153461700",
-            "location": {
-                "cross_streets": "Washington St & Jackson St",
-                "city": "San Francisco",
-                "display_address": [
-                    "2498 Fillmore St",
-                    "Pacific Heights",
-                    "San Francisco, CA 94115"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "Pacific Heights"
-                ],
-                "postal_code": "94115",
-                "country_code": "US",
-                "address": [
-                    "2498 Fillmore St"
-                ],
-                "coordinate": {
-                    "latitude": 37.792421579361,
-                    "longitude": -122.434483766556
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 4.0,
-            "name": "Alamo Square Market & Deli",
-            "phone": "4158617120",
-            "location": {
-                "cross_streets": "Fell St & Hayes St",
-                "city": "San Francisco",
-                "display_address": [
-                    "535 Scott St",
-                    "Alamo Square",
-                    "San Francisco, CA 94117"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "Alamo Square"
-                ],
-                "postal_code": "94117",
-                "country_code": "US",
-                "address": [
-                    "535 Scott St"
-                ],
-                "coordinate": {
-                    "latitude": 37.77479,
-                    "longitude": -122.43622
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 5.0,
-            "name": "Parkside Market",
-            "phone": "4158853483",
-            "location": {
-                "cross_streets": "Lyon St & Central Ave",
-                "city": "San Francisco",
-                "display_address": [
-                    "1600 Hayes St",
-                    "NoPa",
-                    "San Francisco, CA 94117"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "NoPa"
-                ],
-                "postal_code": "94117",
-                "country_code": "US",
-                "address": [
-                    "1600 Hayes St"
-                ],
-                "coordinate": {
-                    "latitude": 37.7744611,
-                    "longitude": -122.4429527
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 4.5,
-            "name": "Home Service Market",
-            "phone": "4153467000",
-            "location": {
-                "cross_streets": "Masonic Ave & Central Ave",
-                "city": "San Francisco",
-                "display_address": [
-                    "1700 Hayes St",
-                    "NoPa",
-                    "San Francisco, CA 94117"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "NoPa"
-                ],
-                "postal_code": "94117",
-                "country_code": "US",
-                "address": [
-                    "1700 Hayes St"
-                ],
-                "coordinate": {
-                    "latitude": 37.7742691040039,
-                    "longitude": -122.444671630859
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 2.5,
-            "name": "Safeway",
-            "phone": "4159214557",
-            "location": {
-                "cross_streets": "Byington St & Ellis St",
-                "city": "San Francisco",
-                "display_address": [
-                    "1335 Webster St",
-                    "Fillmore",
-                    "San Francisco, CA 94115"
-                ],
-                "geo_accuracy": 9.5,
-                "neighborhoods": [
-                    "Fillmore",
-                    "Western Addition"
-                ],
-                "postal_code": "94115",
-                "country_code": "US",
-                "address": [
-                    "1335 Webster St"
-                ],
-                "coordinate": {
-                    "latitude": 37.782739400476,
-                    "longitude": -122.431510900734
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 3.0,
-            "name": "Lucky",
-            "phone": "4159236411",
-            "location": {
-                "cross_streets": "Central Ave & Masonic Ave",
-                "city": "San Francisco",
-                "display_address": [
-                    "1750 Fulton St",
-                    "NoPa",
-                    "San Francisco, CA 94117"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "NoPa"
-                ],
-                "postal_code": "94117",
-                "country_code": "US",
-                "address": [
-                    "1750 Fulton St"
-                ],
-                "coordinate": {
-                    "latitude": 37.7760429382324,
-                    "longitude": -122.445655822754
-                },
-                "state_code": "CA"
-            }
-        },
-        {
-            "rating": 4.0,
-            "name": "California & Lyon Market",
-            "phone": "4157754400",
-            "location": {
-                "cross_streets": "Presidio Ave & Lyon St",
-                "city": "San Francisco",
-                "display_address": [
-                    "3100 California St",
-                    "Pacific Heights",
-                    "San Francisco, CA 94115"
-                ],
-                "geo_accuracy": 8.0,
-                "neighborhoods": [
-                    "Pacific Heights",
-                    "Presidio Heights"
-                ],
-                "postal_code": "94115",
-                "country_code": "US",
-                "address": [
-                    "3100 California St"
-                ],
-                "coordinate": {
-                    "latitude": 37.7876396179199,
-                    "longitude": -122.445610046387
-                },
-                "state_code": "CA"
-            }
-          }
-        ])
+  {
+    "location": {
+      "address": [
+         "2001 Polk St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.7952308654785,
+        "longitude": -122.421829223633
+      },
+      "country_code": "US",
+      "cross_streets": "Broadway St & Pacific Ave",
+      "display_address": [
+        "2001 Polk St",
+        "Nob Hill",
+        "San Francisco, CA 94109",
+      ],
+      "geo_accuracy": 8,
+      "neighborhoods": [
+        "Nob Hill"
+      ],
+      "postal_code": "94109",
+      "state_code": "CA",
+    },
+    "name": "Cheese Plus",
+    "phone": "4159212001",
+    "rating": 4.5,
+  },
+  {
+    "location": {
+      "address": [
+        "856 Cole St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.7660636901855,
+        "longitude": -122.449752807617,
+      },
+      "country_code": "US",
+      "cross_streets": "Carl St & Frederick St",
+      "display_address": [
+        "856 Cole St",
+        "Cole Valley",
+        "San Francisco, CA 94117"
+      ],
+      "geo_accuracy": 8,
+      "neighborhoods": [
+        "Cole Valley"
+      ],
+      "postal_code": "94117",
+      "state_code": "CA"
+    },
+    "name": "Say Cheese",
+    "phone": "4156655020",
+    "rating": 4.5,
+  },
+  {
+    "location": {
+      "address": [
+        "141 Gough St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.7746849060059,
+        "longitude": -122.422805786133,
+      },
+      "country_code": "US",
+      "cross_streets": "Oak St & Lily St",
+      "display_address": [
+        "141 Gough St",
+        "Hayes Valley",
+        "San Francisco, CA 94102"
+      ],
+      "geo_accuracy": 8,
+      "neighborhoods": [
+        "Hayes Valley"
+      ],
+      "postal_code": "94102",
+      "state_code": "CA"
+    },
+    "name": "Raxakoul Wine & Cheese",
+    "phone": "4158749133",
+    "rating": 5
+  },
+  {
+    "location": {
+      "address": [
+        "1945 Hyde St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.7988205,
+        "longitude": -122.4192581
+      },
+      "country_code": "US",
+      "cross_streets": "Union St & Warner Pl",
+      "display_address": [
+        "1945 Hyde St",
+        "Russian Hill",
+        "San Francisco, CA 94109"
+      ],
+      "geo_accuracy": 8,
+      "neighborhoods": [
+        "Russian Hill"
+      ],
+      "postal_code": "94109",
+      "state_code": "CA"
+    },
+    "name": "Union Larder",
+    "phone": "4152727567",
+    "rating": 4
+  },
+  {
+    "location": {
+      "address": [
+        "2120 Chestnut St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.8007698059082,
+        "longitude": -122.438385009766
+      },
+      "country_code": "US",
+      "cross_streets": "Pierce St & Steiner St",
+      "display_address": [
+        "2120 Chestnut St",
+        "Marina/Cow Hollow",
+        "San Francisco, CA 94123"
+      ],
+      "geo_accuracy": 8,
+      "neighborhoods": [
+        "Marina/Cow Hollow"
+      ],
+      "postal_code": "94123",
+      "state_code": "CA",
+    },
+    "name": "Lucca Delicatessen",
+    "phone": "4159217873",
+    "rating": 4
+  },
+  {
+    "location": {
+      "address": [
+        "2323 Chestnut St"
+      ],
+      "city": "San Francisco",
+      "coordinate": {
+        "latitude": 37.800046310035,
+        "longitude": -122.44151908535
+      },
+      "country_code": "US",
+      "cross_streets": "Divisadero St & Scott St",
+      "display_address": [
+        "2323 Chestnut St",
+        "Marina/Cow Hollow",
+        "San Francisco, CA 94123"
+      ],
+      "geo_accuracy": 9.5,
+      "neighborhoods": [
+        "Marina/Cow Hollow"
+      ],
+      "postal_code": "94123",
+      "state_code": "CA"
+    },
+    "name": "Marina Supermarket",
+    "phone": "4153467470",
+    "rating": 4
+  }
+])
         done();
     });
   });

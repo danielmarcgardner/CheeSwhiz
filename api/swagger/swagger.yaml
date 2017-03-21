@@ -140,7 +140,7 @@ paths:
   /findcheese/{zip}/{distance}:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeseShop
-    post:
+    get:
       summary: Find cheese stores in your area
       description: This route makes a yelp api call for cheese stores in your area so you can go out and find the cheese that you want.
       # used as the method name of the controller

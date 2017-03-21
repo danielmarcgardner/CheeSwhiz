@@ -12,7 +12,7 @@ var config = {
 //   console.log('hello');
 //   next();
 // }
-//example of middleware
+// example of middleware
 // app.use('/api/cheese', mw);
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
