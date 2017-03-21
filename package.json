@@ -16,9 +16,14 @@
     "joi": "^10.2.2",
     "jsonwebtoken": "^7.3.0",
     "knex": "^0.12.8",
+    "lodash": "^4.17.4",
+    "nonce": "^1.0.4",
+    "oauth-signature": "^1.3.1",
     "pg": "^6.1.4",
+    "querystring": "^0.2.0",
     "request": "^2.81.0",
-    "swagger-express-mw": "^0.1.0"
+    "swagger-express-mw": "^0.1.0",
+    "yelp": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

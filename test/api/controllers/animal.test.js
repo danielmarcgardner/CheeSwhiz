@@ -126,77 +126,95 @@ afterEach((done) => {
 describe('CheeSwhiz /cheese/animal/{type} route', (done) => {
   it('should return an array of cheeses when given the parameter cow', function(done) {
     request(app)
-      .get('/cheese/animal/cow')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/animal/cow')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 2,
+          name: 'Cheddar',
+          animal: 'cow',
+          firmness: 'semi-hard',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
   it('should return an array of cheeses when given the parameter buffalo', function(done) {
     request(app)
-      .get('/cheese/animal/buffalo')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/animal/buffalo')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 4,
+          name: 'Buffalo Blue',
+          animal: 'buffalo',
+          firmness: 'semi-soft',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
   it('should return an array of cheeses when given the parameter goat', function(done) {
     request(app)
-      .get('/cheese/animal/goat')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/animal/goat')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 3,
+          name: 'Chevre Bucheron',
+          animal: 'goat',
+          firmness: 'soft',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
   it('should return an array of cheeses when given the parameter sheep', function(done) {
     request(app)
-      .get('/cheese/animal/sheep')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        should.not.exist(err);
-
-        expect(res.body).to.deep.equall([
-          {
-          //insert data here!!!
-          }
-        ])
-
-        done();
-      });
+    .get('/api/cheese/animal/sheep')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 1,
+          name: 'Manchego',
+          animal: 'sheep',
+          firmness: 'hard',
+          user_id: 1
+        }
+      ])
+    });
+    done();
   });
 
   it('should return an error when given invalid parameters', function(done) {
     request(app)
-      .get('/cheese/animal/bad')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /plain/)
-      .expect(404,'Invalid Parameter!', done)
+    .get('/cheese/animal/bad')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /plain/)
+    .expect(404,'Invalid Parameter!');
+    done();
   });
+
 });
