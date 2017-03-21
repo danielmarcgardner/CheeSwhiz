@@ -170,12 +170,60 @@ describe('CheeSwhiz /user/login route', (done) => {
     .expect('Content-Type', 'application/json; charset=utf-8')
     .expect(400, JSON.stringify('Bad email or password'), done)
   })
-  //
-  // it('Should reject a user with a user in with no email', (done) => {
-  //
-  // })
-  //
-  // it('Should reject a user with a user in with no password', (done) => {
-  //
-  // })
+
+  it('Should reject a user with a user in with no email', (done) => {
+    const user = {
+      password: 'cheese2'
+    }
+
+    request(app)
+    .post('/api/user/login')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json')
+    .expect(400, {
+      "message":"Request validation failed: Parameter (credentials) failed schema validation",
+      "code":"SCHEMA_VALIDATION_FAILED",
+      "failedValidation":true,
+      "results":{
+        "errors":[
+          {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+          "message":"Missing required property: email",
+          "path":[],
+          "description":"Used for either creating a user or logging a user into CheeSwhiz."
+        }],
+        "warnings":[]
+      },
+      "path":["paths","/user/login","post","parameters","0"],
+      "paramName":"credentials"
+    }, done)
+  })
+
+  it('Should reject a user with a user in with no email', (done) => {
+    const user = {
+      email: 'reidpierredelahunt@gmail.com'
+    }
+
+    request(app)
+    .post('/api/user/login')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json')
+    .expect(400, {
+      "message":"Request validation failed: Parameter (credentials) failed schema validation",
+      "code":"SCHEMA_VALIDATION_FAILED",
+      "failedValidation":true,
+      "results":{
+        "errors":[
+          {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+          "message":"Missing required property: password",
+          "path":[],
+          "description":"Used for either creating a user or logging a user into CheeSwhiz."
+        }],
+        "warnings":[]
+      },
+      "path":["paths","/user/login","post","parameters","0"],
+      "paramName":"credentials"
+    }, done)
+  })
 })
