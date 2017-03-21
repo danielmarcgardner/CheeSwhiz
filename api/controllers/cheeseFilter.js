@@ -24,7 +24,7 @@ function findCheeseByFirmness(req, res) {
 
 function findCheeseByAnimal(req, res) {
   const knex = require('../../knex.js');
-  const animal = req.swagger.params.animal.value;
+  const animal = req.swagger.params.type.value;
   const validAnimals = ['cow', 'buffalo', 'sheep', 'goat'];
   if (validAnimals.indexOf(animal) === -1 || !animal) {
     res.set('Content-Type', 'plain');
@@ -33,7 +33,7 @@ function findCheeseByAnimal(req, res) {
   return knex('cheeses')
   .join('animals', 'animals.id', '=', 'cheeses.animal_id')
   .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+  .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
   .where('animals.animal', animal)
   .orderBy('id', 'asc')
   .then((cheeses) => {
