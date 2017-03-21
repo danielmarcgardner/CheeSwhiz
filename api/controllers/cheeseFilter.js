@@ -79,7 +79,6 @@ function substituteCheese(req, res) {
     res.status(404).send('Name parameter must not be blank.');
   }
   return knex('cheeses')
-
   .where('cheeses.name', '=', name)
   // .join('animals', 'animals.id', '=', 'cheeses.animal_id')
   // .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
