@@ -123,6 +123,13 @@ afterEach((done) => {
   })
 })
 
+function hasToken(res) {
+  if (!('token' in res.body)) throw new Error("Token is missing!");
+  if (!('id' in res.body)) throw new Error("ID is missing!");
+  if (!('email' in res.body)) throw new Error("email is missing!");
+  if (!('super' in res.body)) throw new Error("Super user status is missing!");
+}
+
 describe('CheeSwhiz /user/login route', (done) => {
   it('Should log a user in with proper credentials', (done) => {
 
@@ -136,11 +143,9 @@ describe('CheeSwhiz /user/login route', (done) => {
     .set('Accept', 'application/json')
     .send(user)
     .expect('Content-Type', 'application/json; charset=utf-8')
-    .expect('set-cookie', /token=[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+; Path=\/;.+HttpOnly/)
-    .expect(200, {
-      id: 1,
-      email: 'reidpierredelahunt@gmail.com'
-    }, done);
+    // .expect('set-cookie', /token=[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+; Path=\/;.+HttpOnly/)
+    .expect(hasToken)
+    .expect(200, done);
   });
 
   it('Should reject a user with a user in with bad email', (done) => {
