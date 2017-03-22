@@ -123,6 +123,16 @@ afterEach((done) => {
   })
 })
 
+
+// token to use: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
 describe('CheeSwhiz /user/favorites route', (done) => {
+  it('Should allow a logged in user to see their favorite cheeses', (done) => {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+
+    request(app)
+    .get('/api/user/favorites')
+    .set('Accept', 'application/json')
+    .send(token)
+  })
 
 })
