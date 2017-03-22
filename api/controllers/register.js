@@ -1,5 +1,5 @@
 'use strict';
-const SwaggerExpress = require('swagger-express-mw');
+// const SwaggerExpress = require('swagger-express-mw');
 const bcrypt = require('bcrypt-as-promised');
 const jwt = require('jsonwebtoken');
 
