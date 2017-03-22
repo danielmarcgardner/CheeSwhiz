@@ -197,7 +197,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
           done();
         });
     });
-    it('it should return a 400 Bad Request when not name is not present', (done) => {
+    it('it should return a 400 Bad Request when name is not present', (done) => {
       const newBadCheese = {
         animal_id: 1,
         firmness_id: 1,
