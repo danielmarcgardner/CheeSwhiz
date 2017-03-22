@@ -14,13 +14,13 @@ function getFavorites(req, res) {
     .join('cheeses', 'cheeses.id', '=', 'favorites.cheese_id')
     .join('animals', 'animals.id', '=', 'cheeses.animal_id')
     .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-    .select('cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.id', 'favorites.user_id', 'favorites.favorite_id', 'favorites.notes')
+    .select('cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.id', 'favorites.user_id', 'favorites.id', 'favorites.notes')
     .where('users.id', '=', payload.userId)
     .then((favorites) => {
       res.set('Content-Type', 'application/json');
       res.status(200).json(favorites);
-    }).catch((err) => { console.error(err); })
-  });
+    }).catch((err) => { console.error(err) });
+  })
 }
 
 function addFavorites(req, res) {
@@ -44,11 +44,12 @@ function addFavorites(req, res) {
       .select('cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.id', 'favorites.user_id', 'favorites.favorite_id', 'favorites.notes')
       .where('users.id', '=', payload.userId)
       .andWhere('favorites.cheese_id', '=', cheeseID);
-    }).then((newFavorite) => {
+    })
+    .then((newFavorite) => {
       res.set('Content-Type', 'application/json');
       res.status(200).json(newFavorite);
-    }).catch((err) => { console.error(err) });
-  })
+    })
+  }).catch((err) => { console.error(err) });
 }
 
 function addFavoritesNote(req, res) {
