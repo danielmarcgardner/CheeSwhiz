@@ -7,7 +7,6 @@ function registerNewUser(req, res) {
   const knex = require('../../knex.js');
   const email = req.body.email;
   const password = req.body.password;
-
   knex('users')
   .where('users.email', '=', req.body.email)
   .then((oneOrNone) => {
