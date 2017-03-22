@@ -119,10 +119,87 @@ afterEach((done) => {
     done()
   })
   .catch((err) => {
+    console.log('here');
     done(err)
   })
 })
 
-describe('CheeSwhiz /user/register route', (done) => {
+function hasToken(res) {
+  if (!('token' in res.body)) throw new Error("Token is missing!");
+  if (!('id' in res.body)) throw new Error("ID is missing!");
+  if (!('email' in res.body)) throw new Error("email is missing!");
+  if (!('super' in res.body)) throw new Error("Super user status is missing!");
+}
+
+
+describe('CheeSwhiz /user/register route', () => {
+  it("should return an error if the email is already registered with the database.", (done) => {
+    const user = {
+      email: 'reidpierredelahunt@gmail.com',
+      password: 'cheese1'
+    }
+    request(app)
+    .get('/api/user/register')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json')
+    .expect(400, 'Email Already Exists');
+    done();
+  });
+
+  it("should return the new user with hashed_password if the provided email is not already registered in the database", (done) => {
+    const user = {
+      email: 'kdawg@yahoo.com',
+      password: 'cheese3'
+    }
+
+    request(app)
+    .get('/api/user/register')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .end((err, res) => {
+      // if (err) throw Error(err);
+      expect(res.body).to.deep.equal([
+        {
+          id: 3,
+          email: 'kdawg@yahoo.com',
+          hashed_password: '$2a$10$CtAplCADL7eJPYKwomK6huS5/d48VDbEW2xaiITltch6cAZiHqzsi', //cheese3
+          super: false
+        }
+      ])
+    })
+    done();
+  });
+
+  it("should return an error if the email is missing", (done) => {
+    const user = {
+      // email: 'reidpierredelahunt@gmail.com'
+      password: 'overNineThousand'
+    }
+    request(app)
+    .get('/api/user/register')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json')
+    .expect(400, 'Email Missing')
+    done();
+  });
+
+  it("should return an error if the password is missing", (done) => {
+    const user = {
+      email: 'reidpierredelahunt@gmail.com'
+      // password: 'overNineThousand'
+    }
+    request(app)
+    .get('/api/user/register')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json')
+    .expect(400, 'Password Missing')
+    done();
+  });
+
+
 
 })

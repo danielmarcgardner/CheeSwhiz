@@ -2,6 +2,15 @@
 
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+app.use(bodyParser.json());
+app.use(cookieParser())
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 module.exports = app; // for testing
 
 var config = {

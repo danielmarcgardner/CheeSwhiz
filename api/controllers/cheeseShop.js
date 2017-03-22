@@ -1,9 +1,6 @@
 var SwaggerExpress = require('swagger-express-mw')
 const bodyParser = require('body-parser');
 const Yelp = require('yelp');
-const dotenv = require('dotenv')
-dotenv.load();
-
 
 var yelp = new Yelp({
   consumer_key: process.env.OAUTH_CONSUMER_KEY,

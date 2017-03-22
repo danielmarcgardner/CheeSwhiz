@@ -197,7 +197,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
           done();
         });
     });
-    it('it should return a 400 Bad Request when not name is not present', (done) => {
+    it('it should return a 400 Bad Request when name is not present', (done) => {
       const newBadCheese = {
         animal_id: 1,
         firmness_id: 1,
@@ -309,9 +309,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        // .set('Accept', 'application/json')
         .send(newBadCheese)
-        // .expect('Content-Type', "application/json", done)
         .expect(400, JSON.stringify('This Cheese is in the Database'), done)
     })
   });
