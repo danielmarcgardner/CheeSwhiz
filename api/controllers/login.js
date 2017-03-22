@@ -17,7 +17,7 @@ function logInUser(req, res) {
     let superUser = toCompare[0].super;
     bcrypt.compare(req.body.password, compare)
     .then((userAuth) => {
-      const user = { user_id: userID};
+      const user = { userId: userID};
       const token = jwt.sign(user, process.env.JWT_KEY, {
         expiresIn: '7 days'
       })

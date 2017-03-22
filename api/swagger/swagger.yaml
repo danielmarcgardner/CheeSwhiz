@@ -435,8 +435,8 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/TokenUserGetFavorite"
         # responses may fall through to errors
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
@@ -465,8 +465,8 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
@@ -494,8 +494,8 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
@@ -523,8 +523,8 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
