@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 app.use(bodyParser.json());
 app.use(cookieParser())
 
+const verify = require('./validations/validations')
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -23,6 +25,9 @@ var config = {
 // }
 // example of middleware
 // app.use('/api/cheese', mw);
+
+app.use('/api/user/favorites', verify.verifyLoggedIn)
+
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
 
