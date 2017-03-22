@@ -78,7 +78,7 @@ function addFavoritesNote(req, res) {
       res.set('Content-Type', 'application/json');
       res.status(200).json(newFavorite);
     }).catch((err) => { console.error(err); })
-  }).catch((err) => { console.error(err) });
+  })
 }
 
 function deleteFavorites(req, res) {
