@@ -7,9 +7,6 @@ function registerNewUser(req, res) {
   const knex = require('../../knex.js');
   const email = req.body.email;
   const password = req.body.password;
-  if (!email || !password) {
-    // validation
-  }
   knex('users')
   .where('users.email', '=', req.body.email)
   .then((oneOrNone) => {
@@ -27,22 +24,17 @@ function registerNewUser(req, res) {
     };
     return knex('users').insert(newUser, '*');
   }).then((newInsertedUser) => {
-    const claim = { userId: injectedUser.id }; // this is our 'session'
-    const token = jwt.sign(claim, process.env.JWT_KEY, { // use this environment variable to sign the cookie
-      expiresIn: '7 days'  // Adds an exp field to the payload
+    const claim = { userId: injectedUser.id };
+    const token = jwt.sign(claim, process.env.JWT_KEY, {
+      expiresIn: '7 days'
     });
     const injectedUser = {
       id: newInsertedUser[0].id,
       email: newInsertedUser[0].email,
-      token: token
+      token: token,
+      super: false
     };
-    // const opts = {
-    //   httpOnly: true,
-    //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),  // 7 days
-    //   secure: router.get('env') === 'production'  // Set from the NODE_ENV
-    // };
-    // res.cookie('token', token, opts);
-    res.status(200).json(token);
+    res.status(200).json(injectedUser);
   });
 }
 

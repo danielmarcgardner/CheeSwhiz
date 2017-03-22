@@ -309,9 +309,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .post('/api/cheese')
-        // .set('Accept', 'application/json')
         .send(newBadCheese)
-        // .expect('Content-Type', "application/json", done)
         .expect(400, JSON.stringify('This Cheese is in the Database'), done)
     })
   });
