@@ -32,7 +32,8 @@ function registerNewUser(req, res) {
     const injectedUser = {
       id: newInsertedUser[0].id,
       email: newInsertedUser[0].email,
-      token: token
+      token: token,
+      super: false
     };
     res.status(200).json(injectedUser);
   });

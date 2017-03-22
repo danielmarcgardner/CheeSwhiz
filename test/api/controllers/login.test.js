@@ -143,7 +143,6 @@ describe('CheeSwhiz /user/login route', (done) => {
     .set('Accept', 'application/json')
     .send(user)
     .expect('Content-Type', 'application/json; charset=utf-8')
-    // .expect('set-cookie', /token=[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+; Path=\/;.+HttpOnly/)
     .expect(hasToken)
     .expect(200, done);
   });
