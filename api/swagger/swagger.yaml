@@ -414,7 +414,7 @@ paths:
 
   /user/favorites:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: favorites
     get:
       summary: View a user's favorites.
       description: A logged-in user can view their favorite cheeses.
@@ -769,17 +769,13 @@ definitions:
   TokenUserGetFavorite:
     description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
     required:
-      - token
       - name
       - firmness
       - animal
-      - id
+      - cheese_id
       - user_id
       - favorite_id
     properties:
-      token:
-        type: string
-        description: User's authentication token.
       name:
         type: string
         description: The name of the cheese.
@@ -789,7 +785,7 @@ definitions:
       animal:
         type: string
         description: The animal milk it is made of.
-      id:
+      cheese_id:
         type: integer
         description: Primary key of the cheese.
       user_id:
@@ -798,38 +794,22 @@ definitions:
       favorite_id:
         type: integer
         description: The favorite tables primary key for reference.
+      notes:
+        type: string
+        description: The user's notes on the cheese.
 
   TokenUserAddFavorite:
     description: The information that is needed to add a favorite to the user's favorites.
     required:
       - token
-      - name
-      - firmness
-      - animal
-      - id
-      - user_id
+      - cheese_id
     properties:
       token:
         type: string
         description: User's authentication token.
-      name:
-        type: string
-        description: The name of the cheese.
-      firmness:
-        type: string
-        description: The firmness of the cheese.
-      animal:
-        type: string
-        description: The animal milk it is made of.
-      id:
+      cheese_id:
         type: integer
-        description: Primary key of the cheese.
-      user_id:
-        type: integer
-        description: The user's id foreign key.
-      notes:
-        type: string
-        description: The user's notes on a cheese.
+        description: The id of the cheese.
 
   TokenUserAddNote:
     description: Add a note to a favorite cheese.

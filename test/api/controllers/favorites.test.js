@@ -135,4 +135,14 @@ describe('CheeSwhiz /user/favorites route', (done) => {
     .send(token)
   })
 
+  it('Should allow a logged in user to delete a favorite cheese from their collection of favorites', (done) => {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+
+    const
+    request(app)
+    .get('/api/user/favorites')
+    .set('Accept', 'application/json')
+    .send(token)
+  })
+
 })
