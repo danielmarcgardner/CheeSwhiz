@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 function verifyLoggedIn(req, res, next){
   jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
+      console.log(req.body.token)
       res.status(401).json('Not Logged In')
     }
     else {

@@ -127,12 +127,89 @@ afterEach((done) => {
 // token to use: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
 describe('CheeSwhiz /user/favorites route', (done) => {
   it('Should allow a logged in user to see their favorite cheeses', (done) => {
+    //token for id 1
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
 
     request(app)
     .get('/api/user/favorites')
     .set('Accept', 'application/json')
     .send(token)
+    .expect('Content-Type', 'application/json')
+    .expect(200)
+    .expect((res) => {
+      delete res.body.notes
+    })
+    .end(function(err, res) {
+      expect(res.body).to.deep.equal([
+        {
+          favorite_id: 1,
+          name: 'Manchego',
+          firmness: 'hard',
+          aniaml: 'sheep',
+          cheese_id: 1,
+          user_id: 1
+        },
+        {
+          favorite_id: 2,
+          name: 'Cheddar',
+          firmness: 'semi-hard',
+          aniaml: 'cow',
+          cheese_id: 2,
+          user_id: 1
+        }
+      ])
+      done();
+    });
   })
 
+  it('Should not allow a non-logged in user to see any favorites', (done) => {
+
+    request(app)
+    .get('/api/user/favorites')
+    .set('Accept', 'application/json')
+    .expect(401, JSON.stringify('Not Logged In'), done)
+  })
+
+  it("Should let logged in user's add a cheese to a favorite", (done) => {
+
+    const userSend = {
+      cheese_id: 3,
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+    }
+
+    request(app)
+    .get('/api/user/favorites')
+    .set('Accept', 'application/json')
+    .send(userSend)
+    .expect('Content-Type', 'application/json')
+    .expect((res) => {
+      delete res.body.notes
+    })
+    .expect(200)
+    .end(function(err, res) {
+      expect(res.body).to.deep.equal([
+        {
+          favorite_id: 3,
+          name: 'Chevre Bucheron',
+          firmness: 'soft',
+          aniaml: 'goat',
+          cheese_id: 3,
+          user_id: 1
+        }
+      ])
+      done();
+    });
+  })
+  it('Should not allow a non-logged in user to add any favorites', (done) => {
+
+    const userSend = {
+      cheese_id: 3,
+    }
+
+    request(app)
+    .get('/api/user/favorites')
+    .set('Accept', 'application/json')
+    .send(userSend)
+    .expect(401, JSON.stringify('Not Logged In'), done)
+  })
 })
