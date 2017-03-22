@@ -119,7 +119,6 @@ afterEach((done) => {
     done()
   })
   .catch((err) => {
-    console.log('here');
     done(err)
   })
 })
@@ -131,75 +130,88 @@ function hasToken(res) {
   if (!('super' in res.body)) throw new Error("Super user status is missing!");
 }
 
-
-describe('CheeSwhiz /user/register route', () => {
-  it("should return an error if the email is already registered with the database.", (done) => {
-    const user = {
-      email: 'reidpierredelahunt@gmail.com',
-      password: 'cheese1'
-    }
-    request(app)
-    .get('/api/user/register')
-    .set('Accept', 'application/json')
-    .send(user)
-    .expect('Content-Type', 'application/json')
-    .expect(400, 'Email Already Exists');
-    done();
-  });
-
-  it("should return the new user with hashed_password if the provided email is not already registered in the database", (done) => {
+describe('CheeSwhiz /user/register route', (done) => {
+  it('Should register a user with proper credentials', (done) => {
     const user = {
       email: 'kdawg@yahoo.com',
       password: 'cheese3'
     }
 
     request(app)
-    .get('/api/user/register')
+    .post('/api/user/register')
     .set('Accept', 'application/json')
-    .expect('Content-Type', 'application/json')
-    .expect(200)
-    .end((err, res) => {
-      // if (err) throw Error(err);
-      expect(res.body).to.deep.equal([
-        {
-          id: 3,
-          email: 'kdawg@yahoo.com',
-          hashed_password: '$2a$10$CtAplCADL7eJPYKwomK6huS5/d48VDbEW2xaiITltch6cAZiHqzsi', //cheese3
-          super: false
-        }
-      ])
-    })
-    done();
+    .send(user)
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(hasToken)
+    .expect(200, done);
   });
 
-  it("should return an error if the email is missing", (done) => {
+  it("should return an error if the email is already registered with the database.", (done) => {
     const user = {
-      // email: 'reidpierredelahunt@gmail.com'
-      password: 'overNineThousand'
+      email: 'reidpierredelahunt@gmail.com',
+      password: 'cheese1'
     }
     request(app)
-    .get('/api/user/register')
+    .post('/api/user/register')
+    .set('Accept', 'application/json')
+    .send(user)
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(400, JSON.stringify('Email Already Exists'), done);
+  });
+
+  it('Should reject a user with a user in with no email', (done) => {
+    const user = {
+      password: 'cheese2'
+    }
+
+    request(app)
+    .post('/api/user/register')
     .set('Accept', 'application/json')
     .send(user)
     .expect('Content-Type', 'application/json')
-    .expect(400, 'Email Missing')
-    done();
-  });
+    .expect(400, {
+      "message":"Request validation failed: Parameter (credentials) failed schema validation",
+      "code":"SCHEMA_VALIDATION_FAILED",
+      "failedValidation":true,
+      "results":{
+        "errors":[
+          {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+          "message":"Missing required property: email",
+          "path":[],
+          "description":"Used for either creating a user or logging a user into CheeSwhiz."
+        }],
+        "warnings":[]
+      },
+      "path":["paths","/user/register","post","parameters","0"],
+      "paramName":"credentials"
+    }, done)
+  })
 
-  it("should return an error if the password is missing", (done) => {
+  it('Should reject a user with a user in with no email', (done) => {
     const user = {
       email: 'reidpierredelahunt@gmail.com'
-      // password: 'overNineThousand'
     }
+
     request(app)
-    .get('/api/user/register')
+    .post('/api/user/register')
     .set('Accept', 'application/json')
     .send(user)
     .expect('Content-Type', 'application/json')
-    .expect(400, 'Password Missing')
-    done();
-  });
-
-
-
+    .expect(400, {
+      "message":"Request validation failed: Parameter (credentials) failed schema validation",
+      "code":"SCHEMA_VALIDATION_FAILED",
+      "failedValidation":true,
+      "results":{
+        "errors":[
+          {"code":"OBJECT_MISSING_REQUIRED_PROPERTY",
+          "message":"Missing required property: password",
+          "path":[],
+          "description":"Used for either creating a user or logging a user into CheeSwhiz."
+        }],
+        "warnings":[]
+      },
+      "path":["paths","/user/register","post","parameters","0"],
+      "paramName":"credentials"
+    }, done)
+  })
 })

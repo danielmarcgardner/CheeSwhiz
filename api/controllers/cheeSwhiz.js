@@ -16,31 +16,6 @@ function allCheese(req, res) {
   });
 }
 
-function mw(req, res, next) {
-  console.log('hello');
-  next();
-}
-
-// function postCheese(req, res) {
-//   const knex = require('../../knex.js');
-//   const name = req.body.name;
-//   const animal = Number(req.body.animal_id);
-//   const firmness = Number(req.body.firmness_id);
-//
-//   const newCheese = {
-//     name: req.body.name,
-//     animal_id: animal,
-//     firmness_id: firmness,
-//     user_id: Number(req.body.user_id)
-//   }
-//   knex('cheeses').insert(newCheese, '*')
-//   .then((cheese) => {
-//     res.set('Content-Type', 'application/json');
-//     res.status(200).json(cheese);
-//   }).catch((err) => {
-//     console.error(err);
-//   });
-// }
 
 function nameExtractor(arrayOfObjs){
   let arrOfNames = []
