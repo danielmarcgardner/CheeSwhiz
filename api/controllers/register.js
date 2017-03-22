@@ -7,10 +7,19 @@ function registerNewUser(req, res) {
   const knex = require('../../knex.js');
   const email = req.body.email;
   const password = req.body.password;
+  if (!email) {
+    // validation stuff here for blank password and/or email
+    res.set('Content-Type', 'application/json');
+    res.status(400).json('Email Missing');
+  }
+  if (!password) {
+    res.set('Content-Type', 'application/json');
+    res.status(400).json('Password Missing');
+  }
   knex('users')
   .where('users.email', '=', req.body.email)
   .then((oneOrNone) => {
-    if (oneOrNone.length!==0) { // if user already
+    if (oneOrNone.length!==0) { // if user already exists
       res.set('Content-Type', 'text/plain');
       res.status(400).send('Email Already Exists');
     }
