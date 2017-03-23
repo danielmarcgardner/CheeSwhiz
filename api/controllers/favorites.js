@@ -122,6 +122,7 @@ function addFavoritesNote(req, res) {
 
 function deleteFavorites(req, res) {
   const knex = require('../../knex.js');
+  console.log('here');
   jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.set('Content-Type', 'application/json');

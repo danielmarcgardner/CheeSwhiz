@@ -202,6 +202,7 @@ describe('CheeSwhiz /user/favorites route', (done) => {
       done();
     });
   })
+
   it('Should not allow a non-logged in user to add any favorites', (done) => {
     const userSend = {
       cheese_id: 3,
