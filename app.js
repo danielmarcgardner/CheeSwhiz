@@ -20,7 +20,7 @@ var config = {
 };
 
 app.use('/api/user/favorites', verify.verifyLoggedIn)
-app.use('/api/cheese/:id', verify.verifySuperUser)
+app.use('/api/super/cheese/:id', verify.verifySuperUser)
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
@@ -28,6 +28,8 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   // install middleware
   swaggerExpress.register(app);
 
-  var port = process.env.PORT || 10011;
-  app.listen(port);
+  var port = process.env.PORT || 10010;
+  app.listen(port, () => {
+    console.log('listening on port '+ port)
+  });
 });

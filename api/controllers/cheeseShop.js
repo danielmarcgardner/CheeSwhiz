@@ -16,7 +16,6 @@ function getMeters(i) {
 function cheeseShop(req, res) {
   const zip = Number(req.swagger.params.zip.value);
   const radiusLimit = getMeters(req.swagger.params.distance.value);
-  console.log('yelp');
   yelp.search({ term: 'Gourmet Cheese', location: zip, radius_filter: radiusLimit, category_filter: 'cheese', limit: 15 })
   .then(function (data) {
     if (data.businesses.length === 0) {

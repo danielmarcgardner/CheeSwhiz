@@ -21,7 +21,7 @@ function favCheeseMaker(arrOfCheeses) {
 
 function getFavorites(req, res) {
   const knex = require('../../knex.js');
-  jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
+  jwt.verify(req.headers['token'], process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.set('Content-Type', 'application/json');
       res.status(401).send('Unauthorized');
@@ -43,7 +43,7 @@ function getFavorites(req, res) {
 
 function addFavorites(req, res) {
   const knex = require('../../knex.js');
-  jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
+  jwt.verify(req.headers['token'], process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.set('Content-Type', 'application/json');
       res.status(401).send('Unauthorized');
@@ -84,7 +84,7 @@ function addFavorites(req, res) {
 
 function addFavoritesNote(req, res) {
   const knex = require('../../knex.js');
-  jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
+  jwt.verify(req.headers['token'], process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.set('Content-Type', 'application/json');
       res.status(401).send('Unauthorized');
@@ -122,8 +122,7 @@ function addFavoritesNote(req, res) {
 
 function deleteFavorites(req, res) {
   const knex = require('../../knex.js');
-  console.log('here');
-  jwt.verify(req.body.token, process.env.JWT_KEY, (err, payload) => {
+  jwt.verify(req.headers['token'], process.env.JWT_KEY, (err, payload) => {
     if (err) {
       res.set('Content-Type', 'application/json');
       res.status(401).send('Unauthorized');
