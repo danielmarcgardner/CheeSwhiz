@@ -7,7 +7,6 @@ const dotenv = require('dotenv')
 dotenv.load();
 app.use(cookieParser())
 
-
 function logInUser(req, res) {
   const knex = require('../../knex.js');
   knex('users').where('email', req.body.email)

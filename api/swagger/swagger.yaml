@@ -69,8 +69,8 @@ paths:
   /cheese/{id}:
     x-swagger-router-controller: cheeSwhiz
     patch:
-      summary: Update one of our cheeses!
-      description: Does one of our cheeses have the wrong information? If so, submit an update.
+      summary: Update a cheese!
+      description: A super user/admin may make updates to the cheeses
       # used as the method name of the controller
       operationId: updatedCheese
       parameters:
@@ -80,7 +80,7 @@ paths:
           required: true
           type: integer
 
-        - name: Cheese
+        - name: Cheese info and Token
           in: body
           description: The cheese to update.
           required: false
@@ -94,6 +94,11 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/UpdatedCheese"
         # responses may fall through to errors
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
         "404":
           description: Not Found
           schema:
@@ -414,7 +419,7 @@ paths:
 
   /user/favorites:
     # binds a127 app logic to a route
-    x-swagger-router-controller: cheeSwhiz
+    x-swagger-router-controller: favorites
     get:
       summary: View a user's favorites.
       description: A logged-in user can view their favorite cheeses.
@@ -433,7 +438,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/TokenUserGetFavorite"
+            $ref: "#/definitions/CheeseArrayFavorites"
         # responses may fall through to errors
         "401":
           description: Unauthorized
@@ -463,7 +468,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/CheeseArray"
+            $ref: "#/definitions/TokenUserGetFavorite"
         # responses may fall through to errors
         "401":
           description: Unauthorized
@@ -492,7 +497,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/CheeseArray"
+            $ref: "#/definitions/TokenUserGetFavorite"
         # responses may fall through to errors
         "401":
           description: Unauthorized
@@ -521,7 +526,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/CheeseArray"
+            $ref: "#/definitions/TokenUserDeletedCheese"
         # responses may fall through to errors
         "401":
           description: Unauthorized
@@ -594,6 +599,8 @@ definitions:
 
   UpdateCheese:
     description: Updating a cheese in the database. Please update name, firmness, or animal.
+    required:
+      - token
     properties:
       name:
         type: string
@@ -604,6 +611,9 @@ definitions:
       animal_id:
         type: integer
         description: The animal milk id of the milk it is made of.
+      token:
+        type: string
+        description: A users authentication token
 
   UpdatedCheese:
     description: The cheese information that has been updated.
@@ -766,20 +776,27 @@ definitions:
         type: string
         description: The super user's access token.
 
+  CheeseArrayFavorites:
+    description: An array of cheeses based on the user's selection.
+    required:
+      - cheeses
+    properties:
+      cheeses:
+        type: array
+        description: An array of cheeses
+        items:
+          $ref: "#/definitions/TokenUserGetFavorite"
+
   TokenUserGetFavorite:
     description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
     required:
-      - token
       - name
       - firmness
       - animal
-      - id
+      - cheese_id
       - user_id
       - favorite_id
     properties:
-      token:
-        type: string
-        description: User's authentication token.
       name:
         type: string
         description: The name of the cheese.
@@ -789,7 +806,7 @@ definitions:
       animal:
         type: string
         description: The animal milk it is made of.
-      id:
+      cheese_id:
         type: integer
         description: Primary key of the cheese.
       user_id:
@@ -798,47 +815,31 @@ definitions:
       favorite_id:
         type: integer
         description: The favorite tables primary key for reference.
+      notes:
+        type: string
+        description: The user's notes on the cheese.
 
   TokenUserAddFavorite:
     description: The information that is needed to add a favorite to the user's favorites.
     required:
       - token
-      - name
-      - firmness
-      - animal
-      - id
-      - user_id
+      - cheese_id
     properties:
       token:
         type: string
         description: User's authentication token.
-      name:
-        type: string
-        description: The name of the cheese.
-      firmness:
-        type: string
-        description: The firmness of the cheese.
-      animal:
-        type: string
-        description: The animal milk it is made of.
-      id:
+      cheese_id:
         type: integer
-        description: Primary key of the cheese.
-      user_id:
-        type: integer
-        description: The user's id foreign key.
-      notes:
-        type: string
-        description: The user's notes on a cheese.
+        description: The id of the cheese.
 
   TokenUserAddNote:
     description: Add a note to a favorite cheese.
     required:
-      - note
+      - notes
       - token
       - favorite_id
     properties:
-      note:
+      notes:
         type: string
         description: The text of a user's note on a cheese.
       token:
@@ -884,6 +885,38 @@ definitions:
       super:
         type: boolean
         description: If the super user is a super user
+  
+  TokenUserDeletedCheese:
+    description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
+    required:
+      - name
+      - firmness
+      - animal
+      - cheese_id
+      - user_id
+      - favorite_id
+    properties:
+      name:
+        type: string
+        description: The name of the cheese.
+      firmness:
+        type: string
+        description: The firmness of the cheese.
+      animal:
+        type: string
+        description: The animal milk it is made of.
+      cheese_id:
+        type: integer
+        description: Primary key of the cheese.
+      user_id:
+        type: integer
+        description: The user's id foreign key.
+      favorite_id:
+        type: integer
+        description: The favorite tables primary key for reference.
+      notes:
+        type: string
+        description: The user's notes on the cheese.
 
   ErrorResponse:
     required:

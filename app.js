@@ -19,14 +19,8 @@ var config = {
   appRoot: __dirname // required config
 };
 
-// function mw(req, res, next) {
-//   console.log('hello');
-//   next();
-// }
-// example of middleware
-// app.use('/api/cheese', mw);
-
 app.use('/api/user/favorites', verify.verifyLoggedIn)
+app.use('/api/cheese/:id', verify.verifySuperUser)
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
@@ -34,6 +28,6 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   // install middleware
   swaggerExpress.register(app);
 
-  var port = process.env.PORT || 10010;
+  var port = process.env.PORT || 10011;
   app.listen(port);
 });
