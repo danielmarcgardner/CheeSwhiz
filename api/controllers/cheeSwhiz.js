@@ -1,5 +1,8 @@
 var SwaggerExpress = require('swagger-express-mw')
 const bodyParser = require('body-parser')
+const nameExtractor = require('../helpers/paramFinders.js').nameExtractor;
+const randomIndexFinder = require('../helpers/paramFinders.js').randomIndexFinder;
+
 
 function allCheese(req, res) {
   const knex = require('../../knex.js');
@@ -14,14 +17,6 @@ function allCheese(req, res) {
   }).catch((err) => {
     console.error(err);
   });
-}
-
-function nameExtractor(arrayOfObjs){
-  let arrOfNames = []
-  for (var i = 0; i < arrayOfObjs.length; i++) {
-    arrOfNames.push(arrayOfObjs[i].name)
-  }
-  return arrOfNames
 }
 
 function postCheese(req, res) {
@@ -69,14 +64,13 @@ function updatedCheese(req, res, next) {
   const knex = require('../../knex.js')
   const id = Number.parseInt(req.swagger.params.id.value);
 
-  delete req.body.token
   knex('cheeses').max('id')
   .then((maxNum) => {
     if (maxNum[0].max < id || id < 0) {
       res.status(404).json('Cheese Not Found')
     }
     else {
-      const updatedVersion = req.body
+      const updatedVersion = req.body;
       knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
       .then((cheese) => {
         return knex('cheeses')
@@ -97,117 +91,76 @@ function updatedCheese(req, res, next) {
 
 function randomCheeseGenerator(req, res) {
   const knex = require('../../knex.js');
-  const num = req.swagger.params.number.value;
-  const param = req.swagger.params.animal_or_firmness.value;
-  const validParams = ['cow', 'goat', 'sheep', 'buffalo', 'hard', 'semi-hard', 'semi-soft', 'soft', 'error'];
-  let errorSwitch = false;
-  for (var i = 0; i < validParams.length; i++) {
-    if (i === 8) {
-      errorSwitch = true;
-      break;
-    }
-    if (param === validParams[i]) {
+  const randomQuantity = req.swagger.params.number.value;
+  const prop = req.swagger.params.cheese_prop.value; //change YAML for better name than 'animal_or_firmness', like 'cheese_prop'
+  const validProps = ['cow', 'goat', 'sheep', 'buffalo', 'hard', 'semi-hard', 'semi-soft', 'soft'];
+  let tooManyRandoms = false;
+  for (var i = 0; i < validProps.length; i++) {
+    if (prop === validProps[i]) {
       let randomCheesePromises = [];
-      let paramType;
-      i<4 ? paramType = 'animal': paramType = 'firmness';
-      for (var j = 0; j < num; j++) {
-        let randomIndex = 0;
-        let p;
-        if (paramType === 'animal') {
-          p = knex('cheeses')
+      let indices = [];
+      let params;
+      i<4 ? params = { type: 'animal', knexCheck: 'animals.animal' }: params = { type: 'firmness', knexCheck: 'firmness.firmness' };
+      for (var j = 0; j < randomQuantity; j++) {
+        if (tooManyRandoms === true) { break; }
+        let randomIndex, p;
+        p = knex('cheeses')
+        .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+        .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+        .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
+        .groupBy('cheeses.id')
+        .groupBy('animals.animal')
+        .groupBy('firmness.firmness')
+        .where(params.knexCheck, '=', prop)
+        .count('cheeses.id')
+        .then((count) => {
+          console.log('here');
+          if (count.length < randomQuantity) { tooManyRandoms = true; }
+          randomIndex = randomIndexFinder(count.length, indices);
+          indices.push(randomIndex);
+          return randomIndex;
+        }).then(() => {
+          return knex('cheeses')
+          .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+          .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+          .select('cheeses.id', 'animals.animal')
+          .where(params.knexCheck, '=', prop);
+        }).then((ids) => {
+          let arrayOfIds = [];
+          for (var k = 0; k < ids.length; k++) {
+            let currentObj = ids[k];
+            arrayOfIds.push(currentObj.id);
+          }
+          return arrayOfIds;
+        }).then((arrayOfIds) => {
+          return arrayOfIds[randomIndex];
+        }).then((randomID) => {
+          return knex('cheeses')
           .join('animals', 'animals.id', '=', 'cheeses.animal_id')
           .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
           .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
-          .groupBy('cheeses.id')
-          .groupBy('animals.animal')
-          .groupBy('firmness.firmness')
-          .where('animals.animal', '=', param)
-          .count('cheeses.id')
-          .then((count) => {
-            let maxCount = count.length;
-            let randomInt = Math.floor(Math.random()*maxCount);
-            randomIndex+=randomInt;
-            return randomIndex;
-          }).then(() => {
-            return knex('cheeses')
-            .join('animals', 'animals.id', '=', 'cheeses.animal_id')
-            .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-            .select('cheeses.id', 'animals.animal')
-            .where('animals.animal', '=', param);
-          }).then((ids) => {
-            let arrayOfIds = [];
-            for (var k = 0; k < ids.length; k++) {
-              let currentObj = ids[k];
-              arrayOfIds.push(currentObj.id);
-            }
-            return arrayOfIds;
-          }).then((arrayOfIds) => {
-            return arrayOfIds[randomIndex];
-          }).then((randomID) => {
-            return knex('cheeses')
-            .join('animals', 'animals.id', '=', 'cheeses.animal_id')
-            .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-            .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
-            .where('cheeses.id', '=', randomID);
-          }).then((cheese) => {
-            const cheeseObj = cheese[0];
-            return cheeseObj;
-          });
-        } else if (paramType === 'firmness') {
-          p = knex('cheeses')
-          .join('animals', 'animals.id', '=', 'cheeses.animal_id')
-          .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-          .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
-          .groupBy('cheeses.id')
-          .groupBy('animals.animal')
-          .groupBy('firmness.firmness')
-          .where('firmness.firmness', '=', param)
-          .count('cheeses.id')
-          .then((count) => {
-            let maxCount = count.length;
-            let randomInt = Math.floor(Math.random()*maxCount);
-            randomIndex+=randomInt;
-            return randomIndex;
-          }).then(() => {
-            return knex('cheeses')
-            .join('animals', 'animals.id', '=', 'cheeses.animal_id')
-            .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-            .select('cheeses.id', 'animals.animal')
-            .where('firmness.firmness', '=', param);
-          }).then((ids) => {
-            let arrayOfIds = [];
-            for (var k = 0; k < ids.length; k++) {
-              let currentObj = ids[k];
-              arrayOfIds.push(currentObj.id);
-            }
-            return arrayOfIds;
-          }).then((arrayOfIds) => {
-            return arrayOfIds[randomIndex];
-          }).then((randomID) => {
-            return knex('cheeses')
-            .join('animals', 'animals.id', '=', 'cheeses.animal_id')
-            .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
-            .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness')
-            .where('cheeses.id', '=', randomID);
-          }).then((cheese) => {
-            console.log(cheese);
-            const cheeseObj = cheese[0];
-            return cheeseObj;
-          });
-        }
+          .where('cheeses.id', '=', randomID);
+        }).then((cheese) => {
+          const cheeseObj = cheese[0];
+          return cheeseObj;
+        });
         randomCheesePromises.push(p);
       }
+      if (tooManyRandoms === true) {
+        res.set('Content-Type', 'plain');
+        return res.status(400).send('You requested more random cheeses than the database can supply! Please provide a smaller quantity.');
+      }
       return Promise.all(randomCheesePromises).then((randomCheeses) => {
+        console.log('randomCheeses:');
+        console.log(randomCheeses);
         res.set('Content-Type', 'application/json');
-        res.status(200).json(randomCheeses);
+        return res.status(200).json(randomCheeses);
       });
       break;
     }
   }
-  if (errorSwitch === true) {
-    res.set('Content-Type', 'plain');
-    res.status(400).send('Invalid parameter: please provide a valid animal type or firmness level.')
-  }
+  res.set('Content-Type', 'plain');
+  return res.status(400).send('Invalid parameter: please provide a valid animal type or firmness level.');
 }
 
 function deleteCheese(req, res) {
@@ -238,12 +191,12 @@ function deleteCheese(req, res) {
       })
     }
   })
+
 }
 
 module.exports = {
   allCheese: allCheese,
   postCheese: postCheese,
   updatedCheese: updatedCheese,
-  randomCheeseGenerator: randomCheeseGenerator,
-  deleteCheese: deleteCheese
+  randomCheeseGenerator: randomCheeseGenerator
 }
