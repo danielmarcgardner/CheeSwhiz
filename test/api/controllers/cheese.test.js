@@ -324,13 +324,13 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should update a cheese at a given id', (done) => {
       const updatedCheese = {
         name: 'Manchego',
-        firmness_id: 2,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+        firmness_id: 2
       }
       request(app)
         .patch('/api/super/cheese/1')
-        .send(updatedCheese)
         .set('Accept', 'application/json')
+        .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
+        .send(updatedCheese)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -349,13 +349,13 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should return a 401 Unauthorized if there is a non super-user token', (done) => {
       const updatedCheese = {
         name: 'Manchego',
-        firmness_id: 2,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTQ5MDI4OTc4NywiZXhwIjoxNDkwODk0NTg3fQ.RUa-Wj90JEvCedcRSsvlJfziklSIOBaTDHsMgLC1qII'
+        firmness_id: 2
       }
       request(app)
         .patch('/api/super/cheese/1')
-        .send(updatedCheese)
         .set('Accept', 'application/json')
+        .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTQ5MDI4OTc4NywiZXhwIjoxNDkwODk0NTg3fQ.RUa-Wj90JEvCedcRSsvlJfziklSIOBaTDHsMgLC1qII')
+        .send(updatedCheese)
         // .expect('Content-Type', /plain/)
         .expect(401, JSON.stringify('Unauthorized - Not A Super User'), done)
     })
@@ -366,8 +366,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
       request(app)
         .patch('/api/super/cheese/1')
-        .send(updatedCheese)
         .set('Accept', 'application/json')
+        .send(updatedCheese)
         // .expect('Content-Type', /plain/)
         .expect(401, JSON.stringify('Unauthorized'), done)
     })
@@ -375,26 +375,22 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     const updatedCheese = {
       name: 'Manchego',
       firmness_id: 2,
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
-
     }
     request(app)
       .patch('/api/super/cheese/9000')
-      .send(updatedCheese)
       .set('Accept', 'application/json')
+      .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
+      .send(updatedCheese)
       .expect(404, JSON.stringify('Cheese Not Found'), done)
   })
 })
   describe('DELETE super/cheese/{id}', (done) => {
     it('Should return the deleted cheese information', (done) => {
-      const userSend ={
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
-      }
 
       request(app)
         .delete('/api/super/cheese/1')
-        .send(userSend)
         .set('Accept', 'application/json')
+        .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -419,24 +415,17 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     })
 
     it('Should return a 404 not found if the id does not exist', (done) => {
-      const userSend ={
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
-      }
-
       request(app)
         .delete('/api/super/cheese/9000')
         .set('Accept', 'application/json')
-        .send(userSend)
+        .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
         .expect(404, JSON.stringify('Cheese Not Found'), done)
     })
     it('Should return a 401 Unauthorized if there is a non super-user token', (done) => {
-      const token = {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTQ5MDI4OTc4NywiZXhwIjoxNDkwODk0NTg3fQ.RUa-Wj90JEvCedcRSsvlJfziklSIOBaTDHsMgLC1qII'
-      }
       request(app)
         .delete('/api/super/cheese/1')
-        .send(token)
         .set('Accept', 'application/json')
+        .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTQ5MDI4OTc4NywiZXhwIjoxNDkwODk0NTg3fQ.RUa-Wj90JEvCedcRSsvlJfziklSIOBaTDHsMgLC1qII')
         .expect(401, JSON.stringify('Unauthorized - Not A Super User'), done)
     })
   })

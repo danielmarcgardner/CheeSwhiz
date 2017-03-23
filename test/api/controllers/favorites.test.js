@@ -129,14 +129,11 @@ describe('CheeSwhiz /user/favorites route', (done) => {
   describe('GET favorites', (done) => {
     it('Should allow a logged in user to see their favorite cheeses', (done) => {
       //token for id 1
-      const userInfo = {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
-      }
 
       request(app)
       .get('/api/user/favorites')
+      .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
       .set('Accept', 'application/json')
-      .send(userInfo)
       .expect('Content-Type', 'application/json')
       .expect(200)
       .end(function(err, res) {
@@ -177,12 +174,12 @@ describe('CheeSwhiz /user/favorites route', (done) => {
 
       const userSend = {
         cheese_id: 3,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
       }
 
       request(app)
       .post('/api/user/favorites')
       .set('Accept', 'application/json')
+      .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
       .send(userSend)
       .expect('Content-Type', 'application/json')
       .expect((res) => {
@@ -222,13 +219,13 @@ describe('CheeSwhiz /user/favorites route', (done) => {
 
       const userSend = {
         favorite_id: 1,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo',
         notes: 'I like Manchego... it is tasty... very tasty'
       }
 
       request(app)
       .patch('/api/user/favorites')
       .set('Accept', 'application/json')
+      .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
       .send(userSend)
       .expect(200)
       .end(function(err, res) {
@@ -264,12 +261,12 @@ describe('CheeSwhiz /user/favorites route', (done) => {
     it('Should allow a logged in user to delete a favorite cheese from their collection of favorites', (done) => {
       const userSend = {
         favorite_id: 1,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo',
         user_id: 1
       }
 
       request(app)
       .delete('/api/user/favorites')
+      .set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo')
       .set('Accept', 'application/json')
       .send(userSend)
       .expect(200)

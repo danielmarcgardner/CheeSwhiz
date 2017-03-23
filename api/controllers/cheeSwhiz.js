@@ -65,6 +65,7 @@ function postCheese(req, res) {
 }
 
 function updatedCheese(req, res, next) {
+  console.log('hello')
   const knex = require('../../knex.js')
   const id = Number.parseInt(req.swagger.params.id.value);
 
