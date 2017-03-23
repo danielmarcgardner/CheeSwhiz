@@ -41,7 +41,6 @@ function cheeseShop(req, res) {
         delete data.businesses[i].menu_provider;
         delete data.businesses[i].categories;
       }
-      // console.log(data.businesses);
       res.set('Content-Type', 'application/json')
       res.json(data.businesses);
     }

@@ -60,7 +60,6 @@ function postCheese(req, res) {
 }
 
 function updatedCheese(req, res, next) {
-  console.log('hello')
   const knex = require('../../knex.js')
   const id = Number.parseInt(req.swagger.params.id.value);
 
@@ -114,7 +113,6 @@ function randomCheeseGenerator(req, res) {
         .where(params.knexCheck, '=', prop)
         .count('cheeses.id')
         .then((count) => {
-          console.log('here');
           if (count.length < randomQuantity) { tooManyRandoms = true; }
           randomIndex = randomIndexFinder(count.length, indices);
           indices.push(randomIndex);
@@ -151,8 +149,6 @@ function randomCheeseGenerator(req, res) {
         return res.status(400).send('You requested more random cheeses than the database can supply! Please provide a smaller quantity.');
       }
       return Promise.all(randomCheesePromises).then((randomCheeses) => {
-        console.log('randomCheeses:');
-        console.log(randomCheeses);
         res.set('Content-Type', 'application/json');
         return res.status(200).json(randomCheeses);
       });
@@ -179,12 +175,11 @@ function deleteCheese(req, res) {
       .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
       .where('cheeses.id', id)
       .then((cheeseToDelete) => {
-        knex('cheeses').where('id', id).del()
         let deletedCheese = cheeseToDelete[0]
-        return deletedCheese
+        res.status(200).json(deletedCheese)
       })
       .then((sendDelete) => {
-        res.status(200).json([sendDelete])
+        return knex('cheeses').where('id', id).del()
       })
       .catch((err) => {
         console.error(err)
@@ -198,5 +193,6 @@ module.exports = {
   allCheese: allCheese,
   postCheese: postCheese,
   updatedCheese: updatedCheese,
-  randomCheeseGenerator: randomCheeseGenerator
+  randomCheeseGenerator: randomCheeseGenerator,
+  deleteCheese: deleteCheese
 }
