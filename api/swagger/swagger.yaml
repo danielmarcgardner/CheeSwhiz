@@ -66,7 +66,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /cheese/{id}:
+  /super/cheese/{id}:
     x-swagger-router-controller: cheeSwhiz
     patch:
       summary: Update a cheese!
@@ -98,7 +98,7 @@ paths:
           description: Unauthorized
           schema:
             $ref: "#/definitions/ErrorResponse"
-            
+
         "404":
           description: Not Found
           schema:
@@ -303,7 +303,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/random/{number}/{animal_or_firmness}:
+  /cheese/random/{number}/{cheese_prop}:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
@@ -318,7 +318,7 @@ paths:
           required: true
           type: integer
 
-        - name: animal_or_firmness
+        - name: cheese_prop
           in: path
           description: Enter a either animal or firmness based on what parameter you would like to return cheeses by.
           required: true
@@ -885,7 +885,7 @@ definitions:
       super:
         type: boolean
         description: If the super user is a super user
-  
+
   TokenUserDeletedCheese:
     description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
     required:
