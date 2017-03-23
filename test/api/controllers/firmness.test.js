@@ -221,8 +221,7 @@ describe('CheeSwhiz /cheese/firmness/{type} route', (done) => {
     request(app)
       .get('/api/cheese/firmness/bad')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /plain/)
-      .expect(404,'Invalid Parameter!');
-      done();
+      .expect('Content-Type', /json/)
+      .expect(404,JSON.stringify('Invalid Parameter!'), done);
   });
 });
