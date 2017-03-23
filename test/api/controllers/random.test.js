@@ -569,11 +569,44 @@ describe('CheeSwhiz /cheese/random/{number}/{someParameter} route', (done) => {
     .set('Accept', 'application/json')
     .expect('Content-Type', 'application/json')
     .end((err, res) => {
-      console.log(res.body.length);
       expect(res.body.length).to.deep.equal(1);
     })
     done();
   });
+
+  it("should return an array of cheese objects when asked to provide multiple random cheeses within the number that are available in the database", (done) => {
+    request(app)
+    .get('/api/cheese/random/5/cow')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .end((err, res) => {
+      expect(res.body.length).to.deep.equal(5);
+    })
+    done();
+  });
+
+  it("should return a cheese object the matches the same animal type as the one given", (done) => {
+    request(app)
+    .get('/api/cheese/random/1/cow')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .end((err, res) => {
+      expect(res.body[0].animal).to.deep.equal('cow');
+    })
+    done();
+  });
+
+  it("should return a cheese object that matches the same firmness level as the one given", (done) => {
+    request(app)
+    .get('/api/cheese/random/1/hard')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json')
+    .end((err, res) => {
+      expect(res.body[0].firmness).to.deep.equal('hard');
+    })
+    done();
+  });
+
 
 
 })
