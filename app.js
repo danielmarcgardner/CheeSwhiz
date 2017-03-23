@@ -20,7 +20,7 @@ var config = {
 };
 
 app.use('/api/user/favorites', verify.verifyLoggedIn)
-app.use('/api/cheese/:id', verify.verifySuperUser)
+app.use('/api/super/cheese/:id', verify.verifySuperUser)
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }

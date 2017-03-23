@@ -193,6 +193,7 @@ function randomCheeseGenerator(req, res) {
     res.set('Content-Type', 'plain');
     res.status(400).send('Invalid parameter: please provide a valid animal type or firmness level.')
   }
+}
 
 function deleteCheese(req, res) {
   const knex = require('../../knex.js');

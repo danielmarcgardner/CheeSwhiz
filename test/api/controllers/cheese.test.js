@@ -322,7 +322,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
       }
       request(app)
-        .patch('/api/cheese/1')
+        .patch('/api/super/cheese/1')
         .send(updatedCheese)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -346,7 +346,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
         firmness_id: 2
       }
       request(app)
-        .patch('/api/cheese/1')
+        .patch('/api/super/cheese/1')
         .send(updatedCheese)
         .set('Accept', 'application/json')
         // .expect('Content-Type', /plain/)
@@ -360,7 +360,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
     }
     request(app)
-      .patch('/api/cheese/9000')
+      .patch('/api/super/cheese/9000')
       .send(updatedCheese)
       .set('Accept', 'application/json')
       .expect(404, JSON.stringify('Cheese Not Found'), done)
@@ -373,7 +373,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
 
       request(app)
-        .delete('/api/cheese/1')
+        .delete('/api/super/cheese/1')
         .send(userSend)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -394,7 +394,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
 
     it('Should return a 401 not authorized when a non-super user tries to delete', (done) => {
       request(app)
-        .patch('/api/cheese/1')
+        .patch('/api/super/cheese/1')
         .set('Accept', 'application/json')
         .expect(401, JSON.stringify('Unauthorized'), done)
     })
@@ -405,7 +405,7 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
       }
 
       request(app)
-        .patch('/api/cheese/9000')
+        .patch('/api/super/cheese/9000')
         .set('Accept', 'application/json')
         .send(userSend)
         .expect(404, JSON.stringify('Cheese Not Found'), done)
