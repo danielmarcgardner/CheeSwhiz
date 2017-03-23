@@ -189,8 +189,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
             {
               id: 5,
               name: 'Mahon',
-              animal_id: 1,
-              firmness_id: 1,
+              animal: 'cow',
+              firmness: 'hard',
               user_id: 1
             }
           ])
@@ -332,8 +332,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
             {
               id: 1,
               name: 'Manchego',
-              animal_id: 3,
-              firmness_id: 2,
+              animal: 'sheep',
+              firmness: 'semi-hard',
               user_id: 1
             }
           ])

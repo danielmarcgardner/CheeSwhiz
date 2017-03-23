@@ -49,8 +49,15 @@ function postCheese(req, res) {
       }
       knex('cheeses').insert(newCheese, '*')
       .then((cheese) => {
-        res.set('Content-Type', 'application/json');
-        res.status(200).json(cheese);
+        return knex('cheeses')
+        .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+        .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+        .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+        .where('cheeses.id', cheese[0].id)
+        .then((allCheeseInfo) => {
+          res.set('Content-Type', 'application/json');
+          res.status(200).json(allCheeseInfo);
+        })
       }).catch((err) => {
         console.error(err);
       });
@@ -72,7 +79,15 @@ function updatedCheese(req, res, next) {
       const updatedVersion = req.body
       knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
       .then((cheese) => {
-        res.status(200).json(cheese);
+        return knex('cheeses')
+        .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+        .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+        .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+        .where('cheeses.id', cheese[0].id)
+        .then((updatedCheese) => {
+          res.set('Content-Type', 'application/json');
+          res.status(200).json(updatedCheese);
+        })
       }).catch((err) => {
         console.error(err);
       });
