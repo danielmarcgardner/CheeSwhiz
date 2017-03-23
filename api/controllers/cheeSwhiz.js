@@ -62,6 +62,7 @@ function updatedCheese(req, res, next) {
   const knex = require('../../knex.js')
   const id = Number.parseInt(req.swagger.params.id.value);
 
+  delete req.body.token
   knex('cheeses').max('id')
   .then((maxNum) => {
     if (maxNum[0].max < id || id < 0) {
@@ -192,11 +193,41 @@ function randomCheeseGenerator(req, res) {
     res.set('Content-Type', 'plain');
     res.status(400).send('Invalid parameter: please provide a valid animal type or firmness level.')
   }
+
+function deleteCheese(req, res) {
+  const knex = require('../../knex.js');
+  const id = Number.parseInt(req.swagger.params.id.value);
+
+  knex('cheeses').max('id')
+  .then((maxNum) => {
+    if (maxNum[0].max < id || id < 0) {
+      res.status(404).json('Cheese Not Found')
+    }
+    else {
+      knex('cheeses')
+      .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+      .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+      .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+      .where('cheeses.id', id)
+      .then((cheeseToDelete) => {
+        knex('cheeses').where('id', id).del()
+        let deletedCheese = cheeseToDelete[0]
+        return deletedCheese
+      })
+      .then((sendDelete) => {
+        res.status(200).json([sendDelete])
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    }
+  })
 }
 
 module.exports = {
   allCheese: allCheese,
   postCheese: postCheese,
   updatedCheese: updatedCheese,
-  randomCheeseGenerator: randomCheeseGenerator
+  randomCheeseGenerator: randomCheeseGenerator,
+  deleteCheese: deleteCheese
 }

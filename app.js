@@ -19,14 +19,8 @@ var config = {
   appRoot: __dirname // required config
 };
 
-// function mw(req, res, next) {
-//   console.log('hello');
-//   next();
-// }
-// example of middleware
-// app.use('/api/cheese', mw);
-
-// app.use('/api/user/favorites', verify.verifyLoggedIn)
+app.use('/api/user/favorites', verify.verifyLoggedIn)
+app.use('/api/cheese/:id', verify.verifySuperUser)
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }

@@ -69,8 +69,8 @@ paths:
   /cheese/{id}:
     x-swagger-router-controller: cheeSwhiz
     patch:
-      summary: Update one of our cheeses!
-      description: Does one of our cheeses have the wrong information? If so, submit an update.
+      summary: Update a cheese!
+      description: A super user/admin may make updates to the cheeses
       # used as the method name of the controller
       operationId: updatedCheese
       parameters:
@@ -80,7 +80,7 @@ paths:
           required: true
           type: integer
 
-        - name: Cheese
+        - name: Cheese info and Token
           in: body
           description: The cheese to update.
           required: false
@@ -94,6 +94,11 @@ paths:
             # a pointer to a definition
             $ref: "#/definitions/UpdatedCheese"
         # responses may fall through to errors
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
         "404":
           description: Not Found
           schema:
@@ -594,6 +599,8 @@ definitions:
 
   UpdateCheese:
     description: Updating a cheese in the database. Please update name, firmness, or animal.
+    required:
+      - token
     properties:
       name:
         type: string
@@ -604,6 +611,9 @@ definitions:
       animal_id:
         type: integer
         description: The animal milk id of the milk it is made of.
+      token:
+        type: string
+        description: A users authentication token
 
   UpdatedCheese:
     description: The cheese information that has been updated.
@@ -825,11 +835,11 @@ definitions:
   TokenUserAddNote:
     description: Add a note to a favorite cheese.
     required:
-      - note
+      - notes
       - token
       - favorite_id
     properties:
-      note:
+      notes:
         type: string
         description: The text of a user's note on a cheese.
       token:

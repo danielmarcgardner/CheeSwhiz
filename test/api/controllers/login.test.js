@@ -3,8 +3,9 @@ const app = require('../../../app');
 const knex = require('../../../knex')
 const expect = require('chai').expect;
 
-process.env.NODE_ENV = 'test';
+//process.env.NODE_ENV = 'test';
 
+console.log(process.env.NODE_ENV)
 beforeEach((done) => {
   knex.migrate.latest()
   .then(() =>{
