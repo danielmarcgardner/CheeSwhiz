@@ -318,7 +318,8 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
     it('Should update a cheese at a given id', (done) => {
       const updatedCheese = {
         name: 'Manchego',
-        firmness_id: 2
+        firmness_id: 2,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
       }
       request(app)
         .patch('/api/cheese/1')
@@ -339,23 +340,42 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
           done();
         });
     })
-    it('Should return a 404 not found if the id does not exist', (done) => {
+    it('Should return a 4041 not found if there is no user token', (done) => {
       const updatedCheese = {
         name: 'Manchego',
         firmness_id: 2
       }
       request(app)
-        .patch('/api/cheese/9000')
+        .patch('/api/cheese/1')
         .send(updatedCheese)
         .set('Accept', 'application/json')
         // .expect('Content-Type', /plain/)
-        .expect(404, JSON.stringify('Cheese Not Found'), done)
+        .expect(401, JSON.stringify('Unauthorized'), done)
     })
+  it('Should return a 404 not found if the id does not exist', (done) => {
+    const updatedCheese = {
+      name: 'Manchego',
+      firmness_id: 2,
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+
+    }
+    request(app)
+      .patch('/api/cheese/9000')
+      .send(updatedCheese)
+      .set('Accept', 'application/json')
+      .expect(404, JSON.stringify('Cheese Not Found'), done)
   })
+})
   describe('DELETE /cheese/{id}', (done) => {
     it('Should return the deleted cheese information', (done) => {
+      const userSend ={
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+      }
+
       request(app)
-        .del('/api/cheese/1')
+        .delete('/api/cheese/1')
+        .send(userSend)
+        .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -363,20 +383,32 @@ describe('CheeSwhiz /api/cheese route all verbs', function() {
             {
               id: 1,
               name: 'Manchego',
-              animal_id: 3,
-              firmness_id: 2,
+              animal: 'sheep',
+              firmness: 'hard',
               user_id: 1
             }
           ])
           done();
         });
     })
+
+    it('Should return a 401 not authorized when a non-super user tries to delete', (done) => {
+      request(app)
+        .patch('/api/cheese/1')
+        .set('Accept', 'application/json')
+        .expect(401, JSON.stringify('Unauthorized'), done)
+    })
+
     it('Should return a 404 not found if the id does not exist', (done) => {
+      const userSend ={
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+      }
+
       request(app)
         .patch('/api/cheese/9000')
         .set('Accept', 'application/json')
-        .expect('Content-Type', /plain/)
-        .expect(404,'Cheese not found!', done)
+        .send(userSend)
+        .expect(404, JSON.stringify('Cheese Not Found'), done)
     })
   })
 })
