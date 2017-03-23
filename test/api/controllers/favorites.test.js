@@ -192,7 +192,7 @@ describe('CheeSwhiz /user/favorites route', (done) => {
           favorite_id: 3,
           name: 'Chevre Bucheron',
           firmness: 'soft',
-          aniaml: 'goat',
+          animal: 'goat',
           cheese_id: 3,
           user_id: 1
         }
@@ -200,27 +200,27 @@ describe('CheeSwhiz /user/favorites route', (done) => {
       done();
     });
   })
-  it('Should not allow a non-logged in user to add any favorites', (done) => {
-    const userSend = {
-      cheese_id: 3,
-    }
+  // it('Should not allow a non-logged in user to add any favorites', (done) => {
+  //   const userSend = {
+  //     cheese_id: 3,
+  //   }
+  //
+  //   request(app)
+  //   .get('/api/user/favorites')
+  //   .set('Accept', 'application/json')
+  //   .send(userSend)
+  //   .expect(401, JSON.stringify('Not Logged In'), done)
+  // })
 
-    request(app)
-    .get('/api/user/favorites')
-    .set('Accept', 'application/json')
-    .send(userSend)
-    .expect(401, JSON.stringify('Not Logged In'), done)
-  })
 
-  
-  it('Should allow a logged in user to delete a favorite cheese from their collection of favorites', (done) => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
-
-    const
-    request(app)
-    .get('/api/user/favorites')
-    .set('Accept', 'application/json')
-    .send(token)
-  })
+  // it('Should allow a logged in user to delete a favorite cheese from their collection of favorites', (done) => {
+  //   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTQ5MDIwODUwOCwiZXhwIjoxNDkwODEzMzA4fQ.2XlICHvUu73Y_603Q9KJ5Lb5ahUEOTsZO4gULTOJsWo'
+  //
+  //
+  //   request(app)
+  //   .get('/api/user/favorites')
+  //   .set('Accept', 'application/json')
+  //   .send(token)
+  // })
 
 })
