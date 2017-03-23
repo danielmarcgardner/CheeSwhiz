@@ -825,11 +825,11 @@ definitions:
   TokenUserAddNote:
     description: Add a note to a favorite cheese.
     required:
-      - note
+      - notes
       - token
       - favorite_id
     properties:
-      note:
+      notes:
         type: string
         description: The text of a user's note on a cheese.
       token:

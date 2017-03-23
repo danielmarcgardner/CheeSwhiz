@@ -26,7 +26,7 @@ var config = {
 // example of middleware
 // app.use('/api/cheese', mw);
 
-// app.use('/api/user/favorites', verify.verifyLoggedIn)
+app.use('/api/user/favorites', verify.verifyLoggedIn)
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
