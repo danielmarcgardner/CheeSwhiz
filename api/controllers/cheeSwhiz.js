@@ -19,15 +19,6 @@ function allCheese(req, res) {
   });
 }
 
-
-// function nameExtractor(arrayOfObjs){
-//   let arrOfNames = []
-//   for (var i = 0; i < arrayOfObjs.length; i++) {
-//     arrOfNames.push(arrayOfObjs[i].name)
-//   }
-//   return arrOfNames
-// }
-
 function postCheese(req, res) {
   const knex = require('../../knex.js');
   const name = req.body.name;
@@ -52,8 +43,15 @@ function postCheese(req, res) {
       }
       knex('cheeses').insert(newCheese, '*')
       .then((cheese) => {
-        res.set('Content-Type', 'application/json');
-        res.status(200).json(cheese);
+        return knex('cheeses')
+        .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+        .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+        .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+        .where('cheeses.id', cheese[0].id)
+        .then((allCheeseInfo) => {
+          res.set('Content-Type', 'application/json');
+          res.status(200).json(allCheeseInfo);
+        })
       }).catch((err) => {
         console.error(err);
       });
@@ -62,6 +60,7 @@ function postCheese(req, res) {
 }
 
 function updatedCheese(req, res, next) {
+  console.log('hello')
   const knex = require('../../knex.js')
   const id = Number.parseInt(req.swagger.params.id.value);
 
@@ -74,7 +73,15 @@ function updatedCheese(req, res, next) {
       const updatedVersion = req.body;
       knex('cheeses').where('cheeses.id', id).update(updatedVersion, '*')
       .then((cheese) => {
-        res.status(200).json(cheese);
+        return knex('cheeses')
+        .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+        .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+        .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+        .where('cheeses.id', cheese[0].id)
+        .then((updatedCheese) => {
+          res.set('Content-Type', 'application/json');
+          res.status(200).json(updatedCheese);
+        })
       }).catch((err) => {
         console.error(err);
       });
@@ -154,6 +161,37 @@ function randomCheeseGenerator(req, res) {
   }
   res.set('Content-Type', 'plain');
   return res.status(400).send('Invalid parameter: please provide a valid animal type or firmness level.');
+}
+
+function deleteCheese(req, res) {
+  const knex = require('../../knex.js');
+  const id = Number.parseInt(req.swagger.params.id.value);
+
+  knex('cheeses').max('id')
+  .then((maxNum) => {
+    if (maxNum[0].max < id || id < 0) {
+      res.status(404).json('Cheese Not Found')
+    }
+    else {
+      knex('cheeses')
+      .join('animals', 'animals.id', '=', 'cheeses.animal_id')
+      .join('firmness', 'firmness.id', '=', 'cheeses.firmness_id')
+      .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
+      .where('cheeses.id', id)
+      .then((cheeseToDelete) => {
+        knex('cheeses').where('id', id).del()
+        let deletedCheese = cheeseToDelete[0]
+        return deletedCheese
+      })
+      .then((sendDelete) => {
+        res.status(200).json([sendDelete])
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    }
+  })
+
 }
 
 module.exports = {

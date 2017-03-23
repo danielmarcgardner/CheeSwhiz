@@ -80,7 +80,7 @@ paths:
           required: true
           type: integer
 
-        - name: Cheese info and Token
+        - name: Cheese info
           in: body
           description: The cheese to update.
           required: false
@@ -119,13 +119,6 @@ paths:
           description: cheese id to delete.
           required: true
           type: integer
-
-        - name: Super User Token
-          in: body
-          description: The super user's authentication token to authorize the deletion of a cheese.
-          required: true
-          schema:
-            $ref: "#/definitions/SuperUserToken"
 
       responses:
         "200":
@@ -425,13 +418,6 @@ paths:
       description: A logged-in user can view their favorite cheeses.
       # used as the method name of the controller
       operationId: getFavorites
-      parameters:
-        - name: token
-          in: body
-          description: The user's authentication token.
-          required: true
-          schema:
-            $ref: "#/definitions/Token"
 
       responses:
         "200":
@@ -485,9 +471,9 @@ paths:
       # used as the method name of the controller
       operationId: addFavoritesNote
       parameters:
-        - name: Token and Notes
+        - name: Notes
           in: body
-          description: The user's authentication token.
+          description: The user's notes on a cheese.
           required: true
           schema:
             $ref: "#/definitions/TokenUserAddNote"
@@ -514,9 +500,9 @@ paths:
       # used as the method name of the controller
       operationId: deleteFavorites
       parameters:
-        - name: Token and Delete info
+        - name: Delete info
           in: body
-          description: The user's authentication token.
+          description: The user's deleted cheese info.
           required: true
           schema:
             $ref: "#/definitions/TokenUserDeleteFavorite"
@@ -599,8 +585,6 @@ definitions:
 
   UpdateCheese:
     description: Updating a cheese in the database. Please update name, firmness, or animal.
-    required:
-      - token
     properties:
       name:
         type: string
@@ -611,9 +595,6 @@ definitions:
       animal_id:
         type: integer
         description: The animal milk id of the milk it is made of.
-      token:
-        type: string
-        description: A users authentication token
 
   UpdatedCheese:
     description: The cheese information that has been updated.
@@ -758,24 +739,6 @@ definitions:
         type: string
         description: The user's password or desired password.
 
-  Token:
-    description: A user's authentication token for CheeSwhiz.
-    required:
-      - token
-    properties:
-      token:
-        type: string
-        description: The user's access token.
-
-  SuperUserToken:
-    description: A super user's (or admins) authentication token for CheeSwhiz.
-    required:
-      - token
-    properties:
-      token:
-        type: string
-        description: The super user's access token.
-
   CheeseArrayFavorites:
     description: An array of cheeses based on the user's selection.
     required:
@@ -822,12 +785,8 @@ definitions:
   TokenUserAddFavorite:
     description: The information that is needed to add a favorite to the user's favorites.
     required:
-      - token
       - cheese_id
     properties:
-      token:
-        type: string
-        description: User's authentication token.
       cheese_id:
         type: integer
         description: The id of the cheese.
@@ -836,15 +795,11 @@ definitions:
     description: Add a note to a favorite cheese.
     required:
       - notes
-      - token
       - favorite_id
     properties:
       notes:
         type: string
         description: The text of a user's note on a cheese.
-      token:
-        type: string
-        description: A user's authentication token.
       favorite_id:
         type: integer
         description: The primary key in the favorites table.
@@ -852,13 +807,9 @@ definitions:
   TokenUserDeleteFavorite:
     description: The information that is needed to delete a user's favorite cheese.
     required:
-      - token
       - user_id
       - favorite_id
     properties:
-      token:
-        type: string
-        description: User's authentication token.
       user_id:
         type: integer
         description: The user's id foreign key.

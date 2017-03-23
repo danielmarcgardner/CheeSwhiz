@@ -175,7 +175,6 @@ describe('CheeSwhiz /cheese/specific/{type} route', (done) => {
     .expect('Content-Type', /json/)
     .expect(200)
     .end((err, res) => {
-      // if (err) throw Error(err);
       expect(res.body).to.deep.equal([
         {
           id: 4,
@@ -193,8 +192,7 @@ describe('CheeSwhiz /cheese/specific/{type} route', (done) => {
     request(app)
       .get('/api/cheese/specific/bad')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /plain/)
-      .expect(404,'Invalid Parameter!')
-      done();
+      .expect('Content-Type', /json/)
+      .expect(404,JSON.stringify('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!'), done)
   });
 });

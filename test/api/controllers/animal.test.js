@@ -209,11 +209,10 @@ describe('CheeSwhiz /cheese/animal/{type} route', (done) => {
 
   it('should return an error when given invalid parameters', function(done) {
     request(app)
-    .get('/cheese/animal/bad')
+    .get('/api/cheese/animal/bad')
     .set('Accept', 'application/json')
-    .expect('Content-Type', /plain/)
-    .expect(404,'Invalid Parameter!');
-    done();
+    .expect('Content-Type', /json/)
+    .expect(404,JSON.stringify('Invalid Parameter!'), done);
   });
 
 });
