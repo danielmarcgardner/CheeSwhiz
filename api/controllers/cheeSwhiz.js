@@ -83,7 +83,6 @@ function updatedCheese(req, res, next) {
 }
 
 function randomCheeseGenerator(req, res) {
-  console.log('here');
   const knex = require('../../knex.js');
   const randomQuantity = req.swagger.params.number.value;
   const prop = req.swagger.params.cheese_prop.value; //change YAML for better name than 'animal_or_firmness', like 'cheese_prop'
@@ -108,6 +107,7 @@ function randomCheeseGenerator(req, res) {
         .where(params.knexCheck, '=', prop)
         .count('cheeses.id')
         .then((count) => {
+          console.log('here');
           if (count.length < randomQuantity) { tooManyRandoms = true; }
           randomIndex = randomIndexFinder(count.length, indices);
           indices.push(randomIndex);
