@@ -59,8 +59,8 @@ beforeEach((done) => {
       }),
       knex('cheeses').insert({
         id: 2,
-        name: 'Gruyere',
-        animal_id: 1,
+        name: 'Roncal',
+        animal_id: 3,
         firmness_id: 1,
         user_id: 1
       })
@@ -69,33 +69,6 @@ beforeEach((done) => {
   .then(function() {
     return knex.raw(`SELECT setval('cheeses_id_seq', (SELECT MAX(id) FROM cheeses))`)
   })
-//   .then(() => {
-//     return Promise.all([
-//       knex('favorites').insert({
-//         id: 1,
-//         user_id: 1,
-//         cheese_id: 1
-//       }),
-//       knex('favorites').insert({
-//         id: 2,
-//         user_id: 1,
-//         cheese_id: 2
-//       }),
-//       knex('favorites').insert({
-//         id: 3,
-//         user_id: 2,
-//         cheese_id: 3
-//       }),
-//       knex('favorites').insert({
-//         id: 4,
-//         user_id: 2,
-//         cheese_id: 4
-//       })
-//     ])
-//   })
-//   .then(function() {
-//     return knex.raw(`SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites))`)
-//   })
   .then(() => done());
 });
 
@@ -121,8 +94,8 @@ describe('CheeSwhiz /cheese/substitute/{cheesename} route', (done) => {
       expect(res.body).to.deep.equal([
         {
           id: 2,
-          name: 'Gruyere',
-          animal: 'cow',
+          name: 'Roncal',
+          animal: 'sheep',
           firmness: 'hard',
           user_id: 1
         }
@@ -133,10 +106,9 @@ describe('CheeSwhiz /cheese/substitute/{cheesename} route', (done) => {
 
   it('should return an error when given invalid parameters', function(done) {
     request(app)
-    .get('/cheese/animal/bad')
+    .get('/api/cheese/substitute/bad')
     .set('Accept', 'application/json')
-    .expect('Content-Type', /plain/)
-    .expect(404,'Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
-    done();
+    // .expect('Content-Type', 'application/json')
+    .expect(404, JSON.stringify('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!'), done);
   });
 });

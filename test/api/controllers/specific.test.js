@@ -175,7 +175,6 @@ describe('CheeSwhiz /cheese/specific/{type} route', (done) => {
     .expect('Content-Type', /json/)
     .expect(200)
     .end((err, res) => {
-      // if (err) throw Error(err);
       expect(res.body).to.deep.equal([
         {
           id: 4,

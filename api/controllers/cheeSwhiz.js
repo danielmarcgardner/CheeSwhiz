@@ -16,7 +16,6 @@ function allCheese(req, res) {
   });
 }
 
-
 function nameExtractor(arrayOfObjs){
   let arrOfNames = []
   for (var i = 0; i < arrayOfObjs.length; i++) {

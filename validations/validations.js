@@ -23,11 +23,10 @@ function verifySuperUser(req, res, next){
       knex('users').where('id', userId)
       .then((userInfo) => {
         if (userInfo[0].super === true) {
-          console.log('Here I am')
           next()
         }
         else {
-          res.status(401).json('Not A Super User')
+          res.status(401).json('Unauthorized - Not A Super User')
         }
       })
     }

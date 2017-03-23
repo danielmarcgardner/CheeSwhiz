@@ -303,7 +303,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /cheese/random/{number}/{animal_or_firmness}:
+  /cheese/random/{number}/{cheese_prop}:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
@@ -318,7 +318,7 @@ paths:
           required: true
           type: integer
 
-        - name: animal_or_firmness
+        - name: cheese_prop
           in: path
           description: Enter a either animal or firmness based on what parameter you would like to return cheeses by.
           required: true
