@@ -18,7 +18,7 @@ info:
     | buffalo | 4      | soft
 
   contact:
-    name: Reid Delahunt and Daniel Gardner
+    name: CheeSwhiz GitHub
     url: https://github.com/danielmarcgardner/CheeSwhiz
 host: cheeswhiz.herokuapp.com
 # basePath prefixes all resource paths

@@ -3,22 +3,22 @@ info:
   version: "0.0.1"
   title: CheeSwhiz
   description: Thank you for visiting CheeSwhiz! The cheese api that allows users to fulfill their wildest cheese dreams!
-  
-    
-    | Animal        | animal_id/firmness_id | Firmness  |         
-    
+
+
+    | Animal        | animal_id/firmness_id | Firmness  |
+
     | ------------- |:-------------:|:-------------:|
-    
+
     | cow      | 1 | hard
-    
+
     | goat      | 2      |  semi-hard
-    
+
     | sheep | 3      | semi-soft
-    
+
     | buffalo | 4      | soft
-    
+
   contact:
-    name: Reid Delahunt and Daniel Gardner
+    name: CheeSwhiz GitHub
     url: https://github.com/danielmarcgardner/CheeSwhiz
 host: cheeswhiz.herokuapp.com
 # basePath prefixes all resource paths
@@ -95,7 +95,7 @@ paths:
           description: Users authentication token
           required: true
           type: string
-        
+
         - name: id
           in: path
           description: cheese id to update
@@ -141,7 +141,7 @@ paths:
           description: Users authentication token
           required: true
           type: string
-          
+
         - name: id
           in: path
           description: cheese id to delete.
@@ -154,12 +154,12 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/DeleteCheese"
-        
+
         "401":
           description: Unauthorized
           schema:
             $ref: "#/definitions/ErrorResponse"
-        
+
         "404":
           description: Not Found
           schema:
@@ -233,7 +233,7 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
-            
+
         default:
           description: Error
           schema:
@@ -489,7 +489,7 @@ paths:
           description: Users authentication token
           required: true
           type: string
-          
+
         - name: Favorite Cheese
           in: body
           description: The user's authentication token.
@@ -524,7 +524,7 @@ paths:
           description: Users authentication token
           required: true
           type: string
-      
+
         - name: Notes
           in: body
           description: The user's notes on a cheese.
@@ -559,7 +559,7 @@ paths:
           description: Users authentication token
           required: true
           type: string
-          
+
         - name: Delete info
           in: body
           description: The user's deleted cheese info.
