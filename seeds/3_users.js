@@ -19,13 +19,13 @@ exports.seed = function(knex, Promise) {
         }),
         knex('users').insert({
           id: 3,
-          email: 'kdawg@yahoo.com',
+          email: 'hamid@galvanize.com',
           hashed_password: '$2a$10$CtAplCADL7eJPYKwomK6huS5/d48VDbEW2xaiITltch6cAZiHqzsi', //cheese3
           super: false
         }),
         knex('users').insert({
           id: 4,
-          email: 'klam@earthlink.net',
+          email: 'marylychee@gmail.com',
           hashed_password: '$2a$10$jT3FoTu2zmqydmtrk06j6.UVaFMHOQ3VfrEsv9/ESTv4uJch.PShy', //cheese4
           super: false
         })
