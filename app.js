@@ -1,13 +1,15 @@
 'use strict';
 
 var SwaggerExpress = require('swagger-express-mw');
-var app = require('express')();
+const express = require('express')
+const app = express();
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const path = require('path');
+const cors = require('cors');
 app.use(bodyParser.json());
-app.use(cookieParser())
-
-const verify = require('./validations/validations')
+app.use(cors())
+app.use(express.static(path.join('public')));
+const verify = require('./validations/validations');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -19,8 +21,8 @@ var config = {
   appRoot: __dirname // required config
 };
 
-app.use('/api/user/favorites', verify.verifyLoggedIn)
-app.use('/api/super/cheese/:id', verify.verifySuperUser)
+app.use('/api/user/favorites', verify.verifyLoggedIn);
+app.use('/api/super/cheese/:id', verify.verifySuperUser);
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {
   if (err) { throw err; }
