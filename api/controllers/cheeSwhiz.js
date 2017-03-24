@@ -175,8 +175,8 @@ function deleteCheese(req, res) {
       .select('cheeses.id', 'cheeses.name', 'animals.animal', 'firmness.firmness', 'cheeses.user_id')
       .where('cheeses.id', id)
       .then((cheeseToDelete) => {
-        let deletedCheese = cheeseToDelete[0]
-        res.status(200).json(deletedCheese)
+        cheeseToDelete
+        res.status(200).json(cheeseToDelete)
       })
       .then((sendDelete) => {
         return knex('cheeses').where('id', id).del()
