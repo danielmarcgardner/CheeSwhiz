@@ -2,7 +2,24 @@ swagger: "2.0"
 info:
   version: "0.0.1"
   title: CheeSwhiz
-# during dev, should point to your local machine
+  description: Thank you for visiting CheeSwhiz! The cheese api that allows users to fulfill their wildest cheese dreams!
+
+
+    | Animal        | animal_id/firmness_id | Firmness  |
+
+    | ------------- |:-------------:|:-------------:|
+
+    | cow      | 1 | hard
+
+    | goat      | 2      |  semi-hard
+
+    | sheep | 3      | semi-soft
+
+    | buffalo | 4      | soft
+
+  contact:
+    name: Reid Delahunt and Daniel Gardner
+    url: https://github.com/danielmarcgardner/CheeSwhiz
 host: cheeswhiz.herokuapp.com
 # basePath prefixes all resource paths
 basePath: /api
