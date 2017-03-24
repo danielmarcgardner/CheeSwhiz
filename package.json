@@ -23,7 +23,8 @@
     "querystring": "^0.2.0",
     "request": "^2.81.0",
     "swagger-express-mw": "^0.1.0",
-    "yelp": "^1.0.2"
+    "yelp": "^1.0.2",
+    "dotenv": "^4.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

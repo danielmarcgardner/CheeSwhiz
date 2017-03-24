@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-as-promised');
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv')
-dotenv.load();
+// const dotenv = require('dotenv')
+// dotenv.load();
 app.use(cookieParser())
 
 function logInUser(req, res) {
