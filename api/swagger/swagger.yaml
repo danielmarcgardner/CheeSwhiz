@@ -73,6 +73,12 @@ paths:
       # used as the method name of the controller
       operationId: updatedCheese
       parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
+        
         - name: id
           in: path
           description: cheese id to update
@@ -113,6 +119,12 @@ paths:
       # used as the method name of the controller
       operationId: deleteCheese
       parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
+          
         - name: id
           in: path
           description: cheese id to delete.
@@ -425,6 +437,12 @@ paths:
       description: With this route, a logged-in user can view their favorite cheeses. Please pass your user token obtained from logging in or registering in the header under the key 'token' to access favorites.
       # used as the method name of the controller
       operationId: getFavorites
+      parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
 
       responses:
         "200":
@@ -449,6 +467,12 @@ paths:
       # used as the method name of the controller
       operationId: addFavorites
       parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
+          
         - name: Favorite Cheese
           in: body
           description: The user's authentication token.
@@ -478,6 +502,12 @@ paths:
       # used as the method name of the controller
       operationId: addFavoritesNote
       parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
+      
         - name: Notes
           in: body
           description: The user's notes on a cheese.
@@ -507,6 +537,12 @@ paths:
       # used as the method name of the controller
       operationId: deleteFavorites
       parameters:
+        - name: token
+          in: header
+          description: Users authentication token
+          required: true
+          type: string
+          
         - name: Delete info
           in: body
           description: The user's deleted cheese info.
