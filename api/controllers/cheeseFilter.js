@@ -56,11 +56,9 @@ function findCheeseByName(req, res) {
   .where('cheeses.name', name)
   .then((oneOrNone) => {
     if (oneOrNone.length === 0) {
-      console.log('I am here')
       res.status(404).json('Sorry, that cheese is not in the database: make sure you are spelling the cheese correctly!');
     }
     else {
-      console.log(oneOrNone)
     res.set('Content-Type', 'application/json');
     res.status(200).json(oneOrNone);
     }

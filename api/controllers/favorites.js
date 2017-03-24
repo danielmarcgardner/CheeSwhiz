@@ -136,7 +136,6 @@ function deleteFavorites(req, res) {
       .select('cheeses.name', 'animals.animal', 'firmness.firmness', 'favorites.cheese_id', 'favorites.user_id', 'favorites.id', 'favorites.notes')
       .where('favorites.id', '=', favToDelete)
       .then((deletedFavorite) => {
-        knex('favorites').where('favorites.id', '=', favToDelete).del()
         let deletedCheese = [{
           favorite_id: deletedFavorite[0].id,
           name: deletedFavorite[0].name,
@@ -146,11 +145,11 @@ function deleteFavorites(req, res) {
           user_id: deletedFavorite[0].user_id,
           notes: deletedFavorite[0].notes
         }]
-        return deletedCheese
+        res.set('Content-Type', 'application/json');
+        res.status(200).json(deletedCheese);
       })
       .then((sendDeleteCheese) => {
-        res.set('Content-Type', 'application/json');
-        res.status(200).json(sendDeleteCheese);
+        return knex('favorites').where('favorites.id', '=', favToDelete).del()
       })
       .catch((err) => {
         console.error(err);
