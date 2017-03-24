@@ -69,7 +69,7 @@ paths:
     x-swagger-router-controller: cheeSwhiz
     patch:
       summary: Update a cheese!
-      description: A super user/admin may make updates to the cheeses
+      description: A super user/admin may make updates to the cheeses. A token of a super user MUST be passed in the header of the request to use this route. The header key needed to pass the token is 'token'.
       # used as the method name of the controller
       operationId: updatedCheese
       parameters:
@@ -109,7 +109,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     delete:
       summary: Delete one of our cheeses!
-      description: A super user/admin may delete a cheese from our database.
+      description: A super user/admin may delete a cheese from our database. A token of a super user MUST be passed in the header of the request to use this route. The header key needed to pass the token is 'token'.
       # used as the method name of the controller
       operationId: deleteCheese
       parameters:
@@ -125,6 +125,12 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/DeleteCheese"
+        
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        
         "404":
           description: Not Found
           schema:
@@ -193,6 +199,12 @@ paths:
             $ref: "#/definitions/CheeseArray"
         # responses may fall through to errors
 
+        "404":
+          description: Not Found
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+            
         default:
           description: Error
           schema:
@@ -343,7 +355,7 @@ paths:
     x-swagger-router-controller: register
     post:
       summary: Register a new user.
-      description: This is where new users can create an account with CheeSwhiz.
+      description: This is where new users can create an account with CheeSwhiz. A user token will be sent in the body. Please use this token in the header as the key 'token' when  making requests to favorites.
       # used as the method name of the controller
       operationId: registerNewUser
       parameters:
@@ -366,11 +378,7 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/ErrorResponse"
+
         default:
           description: Error
           schema:
@@ -381,7 +389,7 @@ paths:
     x-swagger-router-controller: login
     post:
       summary: Log a user into CheeSwhiz.
-      description: Log a user into CheeSwhiz so that they can access their favorites.
+      description: Log a user into CheeSwhiz so that they can access their favorites. A user token will be sent in the body. Please use this token in the header as the key 'token' when  making requests to favorites.
       # used as the method name of the controller
       operationId: logInUser
       parameters:
@@ -414,7 +422,7 @@ paths:
     x-swagger-router-controller: favorites
     get:
       summary: View a user's favorites.
-      description: With this route, a logged-in user can view their favorite cheeses.
+      description: With this route, a logged-in user can view their favorite cheeses. Please pass your user token obtained from logging in or registering in the header under the key 'token' to access favorites.
       # used as the method name of the controller
       operationId: getFavorites
 
@@ -437,7 +445,7 @@ paths:
 
     post:
       summary: Add a user's favorites
-      description: With this route, a user can add a new favorite cheese to their favorites collection.
+      description: With this route, a user can add a new favorite cheese to their favorites collection. Please pass your user token obtained from logging in or registering in the header under the key 'token' to access favorites.
       # used as the method name of the controller
       operationId: addFavorites
       parameters:
@@ -466,7 +474,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     patch:
       summary: Update notes on a favorite cheese.
-      description: A user can add a note to an existing favorite or update a previously-created note.
+      description: A user can add a note to an existing favorite or update a previously-created note. Please pass your user token obtained from logging in or registering in the header under the key 'token' to access favorites.
       # used as the method name of the controller
       operationId: addFavoritesNote
       parameters:
@@ -495,7 +503,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     delete:
       summary: Delete a users favorite cheese.
-      description: With this route, a user can delete a favorite cheese from their favorites collection.
+      description: With this route, a user can delete a favorite cheese from their favorites collection. Please pass your user token obtained from logging in or registering in the header under the key 'token' to access favorites.
       # used as the method name of the controller
       operationId: deleteFavorites
       parameters:
