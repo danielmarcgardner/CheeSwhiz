@@ -182,7 +182,7 @@ paths:
       parameters:
         - name: type
           in: path
-          description: Enter the firmness of the cheese you would like.
+          description: Enter the firmness of the cheese you would like. Available options are as follows; 'hard', 'semi-hard', 'semi-soft', or 'soft'.
           required: true
           type: string
 
@@ -204,13 +204,13 @@ paths:
     x-swagger-router-controller: cheeseFilter
     get:
       summary: Find cheeses by animal milk
-      description: Search through our cheese database and find cheeses by their the animal milk.
+      description: Search through our cheese database and find cheeses by their animal milk.
       # used as the method name of the controller
       operationId: findCheeseByAnimal
       parameters:
         - name: type
           in: path
-          description: Enter the animal milk of the cheese you would like.
+          description: Enter the animal milk of the cheese you would like. Available options are as follows; 'cow', 'goat', 'sheep', or 'buffalo'.
           required: true
           type: string
 
@@ -236,7 +236,7 @@ paths:
     x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a specific cheese by name.
-      description:  Search through our cheese database and find a specific cheese by it's name.
+      description:  Search through our cheese database and find a specific cheese by its name.
       # used as the method name of the controller
       operationId: findCheeseByName
       parameters:
@@ -269,13 +269,13 @@ paths:
     x-swagger-router-controller: cheeseFilter
     get:
       summary: Find a substitute cheese.
-      description: Find cheeses that share the same animal milk and firmness of the cheese being searched for.
+      description: Find cheeses that share the same animal milk and firmness as the cheese being searched for.
       # used as the method name of the controller
       operationId: substituteCheese
       parameters:
         - name: cheesename
           in: path
-          description: Enter the name of the cheese you would like to find a substitute for.
+          description: Enter the name of the cheese you would like to find (a) substitute(s) for.
           required: true
           type: string
 
@@ -300,20 +300,20 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: cheeSwhiz
     get:
-      summary: Find a random amount of cheeses.
-      description: Find a random number of cheeses by some parameter from our database.
+      summary: Find random cheeses!
+      description: Find a random number of cheeses that share a common parameter from our database.
       # used as the method name of the controller
       operationId: randomCheeseGenerator
       parameters:
         - name: number
           in: path
-          description: Enter the number of random cheeses you would like.
+          description: Enter the number of random cheeses you would like to see.
           required: true
           type: integer
 
         - name: cheese_prop
           in: path
-          description: Enter a either animal or firmness based on what parameter you would like to return cheeses by.
+          description: Enter either an animal or firmness based on what parameter you would like to return cheeses by. Available options are as follows; 'cow', 'goat', 'sheep', 'buffalo', 'hard', 'semi-hard', 'semi-soft', or 'soft'.
           required: true
           type: string
 
@@ -350,7 +350,7 @@ paths:
       parameters:
         - name: credentials
           in: body
-          description: Users email and password they are registering.
+          description: The new user's email and desired password they are registering with.
           required: true
           schema:
             $ref: "#/definitions/userRegLogin"
@@ -388,7 +388,7 @@ paths:
       parameters:
         - name: credentials
           in: body
-          description: User's email and password they are logging in with.
+          description: The user's email and password that they are logging in with.
           required: true
           schema:
             $ref: "#/definitions/userRegLogin"
@@ -415,7 +415,7 @@ paths:
     x-swagger-router-controller: favorites
     get:
       summary: View a user's favorites.
-      description: A logged-in user can view their favorite cheeses.
+      description: With this route, a logged-in user can view their favorite cheeses.
       # used as the method name of the controller
       operationId: getFavorites
 
@@ -438,11 +438,11 @@ paths:
 
     post:
       summary: Add a user's favorites
-      description: A user can add a new favorite cheese to their favorites collection.
+      description: With this route, a user can add a new favorite cheese to their favorites collection.
       # used as the method name of the controller
       operationId: addFavorites
       parameters:
-        - name: Token and Favorite Cheese
+        - name: Favorite Cheese
           in: body
           description: The user's authentication token.
           required: true
@@ -467,7 +467,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     patch:
       summary: Update notes on a favorite cheese.
-      description: A user can add a note to an existing favorite or update a note.
+      description: A user can add a note to an existing favorite or update a previously-created note.
       # used as the method name of the controller
       operationId: addFavoritesNote
       parameters:
@@ -496,7 +496,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     delete:
       summary: Delete a users favorite cheese.
-      description: Delete a favorite cheese from the users favorites.
+      description: With this route, a user can delete a favorite cheese from their favorites collection.
       # used as the method name of the controller
       operationId: deleteFavorites
       parameters:
@@ -535,7 +535,7 @@ definitions:
     properties:
       cheeses:
         type: array
-        description: An array of cheeses
+        description: An array of cheeses.
         items:
           $ref: "#/definitions/Cheese"
   Cheese:
@@ -555,13 +555,13 @@ definitions:
         description: The firmness of the cheese.
       animal:
         type: string
-        description: The animal milk it is made of.
+        description: The animal milk the cheese is made of.
       id:
         type: integer
         description: Primary key of the cheese.
       user_id:
         type: integer
-        description: The user's id who added the cheese to the database.
+        description: The unique id of the user who added the cheese to the database.
 
   CreateCheese:
     description: Adding new cheese to the databse.
@@ -578,10 +578,10 @@ definitions:
         description: The firmness id of the cheese.
       animal_id:
         type: integer
-        description: The animal milk id it is made of.
+        description: The animal milk id of the cheese.
       user_id:
         type: integer
-        description: The optional user_id. Can be null.
+        description: The optional user_id. This property can be null.
 
   UpdateCheese:
     description: Updating a cheese in the database. Please update name, firmness, or animal.
@@ -594,7 +594,7 @@ definitions:
         description: The firmness id of the cheese.
       animal_id:
         type: integer
-        description: The animal milk id of the milk it is made of.
+        description: The animal milk id of the cheese.
 
   UpdatedCheese:
     description: The cheese information that has been updated.
@@ -607,7 +607,7 @@ definitions:
         description: The firmness of the cheese.
       animal:
         type: string
-        description: The animal milk it is made of.
+        description: The animal milk that the cheese is made of.
       id:
         type: integer
         description: The id of the cheese to update.
@@ -629,10 +629,10 @@ definitions:
         description: The firmness of the cheese.
       animal:
         type: string
-        description: The animal milk it is made of.
+        description: The animal milk that the cheese is made of.
       id:
         type: integer
-        description: The id of the cheese to update.
+        description: The id of the cheese that is being deleted.
       user_id:
         type: integer
         description: The id of the user who created the cheese.
@@ -660,12 +660,12 @@ definitions:
         properties:
           cross_streets:
             type: string
-            description: The cross streets of the cheese store.
+            description: The nearest cross streets indicating the cheese store's general location.
           city:
             type: string
           display_address:
             type: array
-            description: An array containing all address information.
+            description: An array containing all address information for the cheese store.
             items:
               required:
               - address
@@ -674,7 +674,7 @@ definitions:
               properties:
                 address:
                   type: string
-                  description: The stores physical address.
+                  description: The store's physical address.
                 neighborhood:
                   type: string
                   description: The neighborhood where the store is listed.
@@ -686,33 +686,33 @@ definitions:
             description: The geo data that yelp provides.
           neighborhoods:
             type: array
-            description: An array of the neighborhood in which the store is located.
+            description: An array of the neighborhoods that the store is associated with.
             items:
               required:
               - neighborhood
               properties:
                 neighborhood:
                   type: string
-                  description: An array of the neighborhood in which the store is located.
+                  description: An array of the neighborhoods that the store is associated with.
           postal_code:
             type: integer
             description: The postal code of the cheese store.
           country_code:
             type: string
-            description: the Country Code of the cheese store.
+            description: the country code of the cheese store.
           address:
             type: array
-            description: An array of the cheese store's address.
+            description: An array containing the cheese store's address information.
             items:
               required:
                 - address
               properties:
                 address:
                   type: string
-                  description: An array with the stores physical address.
+                  description: An array containing individual lines establishing the store's physical address.
           coordinates:
             type: object
-            description: The Latitude and Longitude of the cheese store.
+            description: The latitude and longitude coordinates of the cheese store.
             properties:
               latitude:
                 type: number
@@ -722,7 +722,7 @@ definitions:
                 description: Longitude
           state_code:
             type: string
-            description: The state where the store is locted.
+            description: The state where the store is located.
 
 
 
@@ -737,7 +737,7 @@ definitions:
         description: The user's email address in the database.
       password:
         type: string
-        description: The user's password or desired password.
+        description: The user's password or desired password input.
 
   CheeseArrayFavorites:
     description: An array of cheeses based on the user's selection.
@@ -746,12 +746,12 @@ definitions:
     properties:
       cheeses:
         type: array
-        description: An array of cheeses
+        description: An array of cheeses.
         items:
           $ref: "#/definitions/TokenUserGetFavorite"
 
   TokenUserGetFavorite:
-    description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
+    description: When a user is authenticated, this is the information that is retrieved when they request a list of their favorite cheeses.
     required:
       - name
       - firmness
@@ -768,22 +768,22 @@ definitions:
         description: The firmness of the cheese.
       animal:
         type: string
-        description: The animal milk it is made of.
+        description: The animal milk that the cheese is made of.
       cheese_id:
         type: integer
         description: Primary key of the cheese.
       user_id:
         type: integer
-        description: The user's id foreign key.
+        description: The unique id that acts as a foreign key to identify the user who put the cheese into the database.
       favorite_id:
         type: integer
-        description: The favorite tables primary key for reference.
+        description: The favorite table's primary key for reference.
       notes:
         type: string
-        description: The user's notes on the cheese.
+        description: The user's notes on the cheese (this can be null).
 
   TokenUserAddFavorite:
-    description: The information that is needed to add a favorite to the user's favorites.
+    description: The information that is necessary to add a favorite into the user's favorites collection.
     required:
       - cheese_id
     properties:
@@ -805,7 +805,7 @@ definitions:
         description: The primary key in the favorites table.
 
   TokenUserDeleteFavorite:
-    description: The information that is needed to delete a user's favorite cheese.
+    description: The information that is needed to delete a cheese listing from the user's favorites collection.
     required:
       - user_id
       - favorite_id
@@ -826,16 +826,16 @@ definitions:
     properties:
       email:
         type: string
-        description: The users email.
+        description: The user's email.
       id:
         type: integer
-        description: The users id.
+        description: The user's id.
       token:
         type: string
-        description: The users validation token sent in the body.
+        description: The user's validation token sent in the body.
       super:
         type: boolean
-        description: If the super user is a super user
+        description: If the super user is a super user, this will be 'true'. If not, it is 'false'.
 
   TokenUserDeletedCheese:
     description: When a user is authenticated, this is the information that is retrieved when they get their favorite cheeses.
@@ -855,16 +855,16 @@ definitions:
         description: The firmness of the cheese.
       animal:
         type: string
-        description: The animal milk it is made of.
+        description: The animal milk that the cheese is made of.
       cheese_id:
         type: integer
         description: Primary key of the cheese.
       user_id:
         type: integer
-        description: The user's id foreign key.
+        description: The unique id that acts as a foreign key to identify the user who put the cheese into the database.
       favorite_id:
         type: integer
-        description: The favorite tables primary key for reference.
+        description: The favorite table's primary key for reference.
       notes:
         type: string
         description: The user's notes on the cheese.
