@@ -10,7 +10,7 @@ CheeSwhiz is built with Swagger which is built on top of Node and Express. Swagg
 
 # Getting Started
 
-1. Fork and clone repo
+1. Fork and clone repo.
 2. `npm install`
 3. Please register for [Yelp OAuth Tokens](https://www.yelp.com/developers/v3/manage_app) for the find a cheese store search functionality.
 4. Set up a '.env' file. The '.env' file should look like this:
@@ -21,4 +21,10 @@ OAUTH_CONSUMER_SECRET= xxxxx
 OAUTH_TOKEN= xxxxx
 OAUTH_TOKEN_SECRET= xxxxx
 ```
-5. `swagger project edit` To run it locally in development mode.
+5. `createdb cheeswhiz_dev` To create local development database.
+6. `createdb cheeswhiz_test` To create local testing database.
+7. `knex migrate:rollback` To rollback database (not necessary for initial install).
+8. `knex migrate:latest` Add tables to the db.
+9. `knex seed:run` Add the seeds to the db.
+10. `swagger project edit` To run it locally in development mode.
+11. Enjoy learning about cheese.
