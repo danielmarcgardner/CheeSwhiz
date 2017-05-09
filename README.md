@@ -1,6 +1,24 @@
-# CheeSwhiz
-CheeSwhiz is an api that allows users to fulfill their wildest cheese dreams. Please visit: http://cheeswhiz.herokuapp.com/api-docs/ for full documentation.
+# CheeSwhiz - Galvanize Q2 Back End Project
 
-CheeSwhiz accomplished it's goals it set out to complete in from the proposal. Everyone can view all cheeses in the database; add a cheese to the database; search for cheeses by name, animal milk, firmness; find a substitute cheese; randomly generate a cheese; and find a local cheese store. Everyone can log in or create a basic account with CheeSwhiz. This allows users to save favorite cheeses, add notes to those cheeses, and delete favorites.  Lastly there are super-users (@danielmarcgardner and @reidPD) who can update cheeses in the database as well as delete them.
+For full documentation of the CheeSwhiz API please visit: http://cheeswhiz.herokuapp.com/api-docs/
 
-While we accomplished all of our goals there are some stretches we would like to implement in the future. We would like to make a more robust database with more cheeses as well as add in various other characteristics like aromas, country of origin, texture. We would also like to add in other animals to the table. Our goal of using nightmare.js to scrape the web for cheeses was timeboxed and expired however we would like to continue to explore that option. Lastly we believe that we should restrict who can add cheeses to the database and make sure that they are at least logged in to be able to add cheeses to the database for tracking purposes.
+CheeSwhiz is an api that allows users to get information about Cheese. CheeSwhiz has 3 levels of users: non-logged in, registered users, and super-users. All users can view all cheeses in the database; add a cheese to the database; search for cheeses by name, animal milk, firmness; find a substitute cheese; randomly generate a cheese; and find a local cheese store. Everyone can log in or create a basic account with CheeSwhiz. Registered users can save favorite cheeses, add notes to their favorite cheeses, and delete favorites.  Lastly there are super-users (@danielmarcgardner and @reidPD) who can update cheeses in the database as well as delete them.
+
+CheeSwhiz was voted 2nd best project in the class and was the most used API in Q3 to build a front end for.
+
+CheeSwhiz is built with Swagger which is built on top of Node and Express. Swagger builds the interactive documentation that is deployed and does some of the basic validations. CheeSwhiz uses a PostgreSQL database to store data and is connected to the server using Knex. User authentication and authorization is transmitted and decoded using JWT. CheeSwhiz uses Mocha/Super Test for testing.
+
+# Getting Started
+
+1. Fork and clone repo
+2. `npm install`
+3. Please register for [Yelp OAuth Tokens](https://www.yelp.com/developers/v3/manage_app) for the find a cheese store search functionality.
+4. Set up a '.env' file. The '.env' file should look like this:
+```
+JWT_KEY=xxxxx
+OAUTH_CONSUMER_KEY= xxxxx
+OAUTH_CONSUMER_SECRET= xxxxx
+OAUTH_TOKEN= xxxxx
+OAUTH_TOKEN_SECRET= xxxxx
+```
+5. `swagger project edit` To run it locally in development mode.
